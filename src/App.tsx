@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Play, Pause, Volume2, VolumeX, Maximize, ShieldCheck, Zap,
   CheckCircle2, ChevronDown, ChevronUp, Lock, Sparkles, HelpCircle,
-  Check, CreditCard, X, ShoppingBag, CheckCheck, Gift
+  Check, CreditCard, X, ShoppingBag, CheckCheck, Gift, Clock
 } from 'lucide-react';
 import courseModuleAiImg from './assets/optimized/course_module_ai.webp';
 import gta6HeroBannerImg from './assets/optimized/gta6_hero_banner.webp';
@@ -78,6 +78,54 @@ const RecentBuyerToast = React.memo(function RecentBuyerToast() {
         <span className="font-bold text-white">{recentBuyer.name}</span>
         <p className="text-rose-500 font-semibold">comprou e aproveitou a <span className="underline">Black Friday</span>!</p>
         <span className="text-[10px] text-zinc-400">{recentBuyer.time}</span>
+      </div>
+    </div>
+  );
+});
+
+function getOfferDeadlineInfo(now: Date) {
+  const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+  const diffMs = Math.max(0, nextMidnight.getTime() - now.getTime());
+  const totalSeconds = Math.floor(diffMs / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const dd = String(nextMidnight.getDate()).padStart(2, '0');
+  const mm = String(nextMidnight.getMonth() + 1).padStart(2, '0');
+
+  return {
+    dateLabel: `${dd}/${mm}`,
+    hours: String(hours).padStart(2, '0'),
+    minutes: String(minutes).padStart(2, '0'),
+    seconds: String(seconds).padStart(2, '0'),
+  };
+}
+
+const OfferExpiryTimer = React.memo(function OfferExpiryTimer() {
+  const [info, setInfo] = useState(() => getOfferDeadlineInfo(new Date()));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setInfo(getOfferDeadlineInfo(new Date()));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="mt-4 rounded-xl bg-zinc-900/90 border border-rose-500/30 px-4 py-3 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center shadow-lg">
+      <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-zinc-200">
+        <Clock className="w-4 h-4 text-rose-500 shrink-0 animate-pulse" />
+        <span>
+          Essa oferta acaba no dia <strong className="text-rose-400 font-extrabold">{info.dateLabel}</strong>
+        </span>
+      </div>
+      <div className="flex items-center gap-1.5 font-mono text-xs sm:text-sm font-black text-white">
+        <span className="bg-zinc-950 border border-zinc-800 px-2 py-0.5 rounded-md text-rose-400">{info.hours}h</span>
+        <span className="text-zinc-500">:</span>
+        <span className="bg-zinc-950 border border-zinc-800 px-2 py-0.5 rounded-md text-rose-400">{info.minutes}m</span>
+        <span className="text-zinc-500">:</span>
+        <span className="bg-zinc-950 border border-zinc-800 px-2 py-0.5 rounded-md text-rose-400">{info.seconds}s</span>
       </div>
     </div>
   );
@@ -219,7 +267,7 @@ export default function App() {
         {/* Headline */}
         <div className="text-center max-w-4xl mx-auto mb-10">
           <h1 className="font-['Sora',sans-serif] text-3xl sm:text-5xl lg:text-[3.35rem] font-extrabold tracking-[-0.03em] text-white mb-6 leading-[1.14] antialiased">
-            Saia do <span className="text-rose-500 font-extrabold">CLT</span> faturando de <span className="text-amber-400">R$ 5.000 a R$ 30.000 ainda no primeiro mês</span> Programando Mapas para o GTA VI RP Usando Apenas IA
+            Saia do <span className="text-rose-500 font-extrabold">CLT</span> faturando de <span className="text-amber-400">R$ 10.000 a R$ 30.000 ainda no primeiro mês</span> Programando Mapas para o GTA VI RP Usando Apenas IA
           </h1>
           <p className="text-lg sm:text-xl text-zinc-300 max-w-3xl mx-auto leading-relaxed">
             Já perdeu todas as ondas, vai perder mais uma?
@@ -353,6 +401,9 @@ export default function App() {
 
           <p className="text-center text-base sm:text-lg text-zinc-300 font-medium mt-5">
             Essa pode ser sua <span className="text-white font-bold">renda extra</span> ou até sua <span className="text-amber-400 font-bold">renda principal!</span>
+          </p>
+          <p className="text-center text-sm sm:text-base font-semibold italic text-zinc-300 mt-1.5">
+            "Enquanto todo mundo joga, você faz dinheiro. Aproveite."
           </p>
         </div>
 
@@ -560,6 +611,9 @@ export default function App() {
           </h2>
           <p className="text-zinc-300 max-w-3xl mx-auto text-base sm:text-lg leading-relaxed">
             Veja conversas reais de alunos que não esperaram o jogo sair: já estão fechando parcerias, vendendo acessos, criando servidores e faturando alto com IA.
+          </p>
+          <p className="text-zinc-400 text-xs sm:text-sm mt-2">
+            (Alguns alunos desde o GTA V também)
           </p>
         </div>
 
@@ -930,26 +984,24 @@ export default function App() {
               </div>
             </div>
 
-            <div className="mb-6 space-y-1.5 text-center">
-              <p className="text-sm sm:text-base font-bold text-white">
-                Este pode ser sua <span className="text-zinc-200">renda extra</span> ou até sua <span className="text-amber-400">renda principal</span>.
-              </p>
-              <p className="text-sm sm:text-base font-semibold italic text-zinc-300">
-                "Enquanto todo mundo joga, você faz dinheiro. Aproveite."
-              </p>
-            </div>
+            <p className="text-center text-sm sm:text-base text-zinc-300 font-medium mb-6">
+              Essa pode ser sua <span className="text-white font-bold">renda extra</span> ou até sua <span className="text-amber-400 font-bold">renda principal!</span>
+            </p>
 
-            {/* MAIN CHECKOUT BUTTON AT BOTTOM (Pulsing) */}
+            {/* MAIN CHECKOUT BUTTON AT BOTTOM (Glowing + Light Sweep) */}
             <a 
               href="https://pay.wiapy.com/F6rGZIyQZ1UL"
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleCheckoutClick}
-              className="w-full py-6 bg-green-500 hover:bg-green-400 text-white font-black text-xl rounded-2xl shadow-xl shadow-green-500/50 transition-all transform hover:scale-105 flex items-center justify-center gap-3 animate-pulse text-center"
+              className="btn-checkout-glow w-full py-6 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-black text-xl rounded-2xl border border-green-300/60 transition-all transform hover:scale-105 flex items-center justify-center gap-3 text-center"
             >
-              <Zap className="w-6 h-6 fill-white" />
-              <span>QUERO GANHAR DINHEIRO COM GTA VI</span>
+              <Zap className="w-6 h-6 fill-white relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
+              <span className="relative z-10 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]">QUERO GANHAR DINHEIRO COM GTA VI</span>
             </a>
+
+            {/* Countdown Timer directly below checkout button */}
+            <OfferExpiryTimer />
           </div>
 
           {/* Guarantee Badge */}
@@ -1124,9 +1176,9 @@ export default function App() {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={handleCheckoutClick}
-                      className="block text-center w-full py-4 bg-green-500 hover:bg-green-400 text-white font-extrabold rounded-xl shadow-lg shadow-green-500/30 transition-all text-sm animate-pulse"
+                      className="btn-checkout-glow block text-center w-full py-4 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-extrabold rounded-xl border border-green-300/60 transition-all text-sm"
                     >
-                      GARANTIR PREÇO DE BLACK FRIDAY (R$ 47)
+                      <span className="relative z-10">GARANTIR PREÇO DE BLACK FRIDAY (R$ 47)</span>
                     </a>
                   </div>
                 </form>
