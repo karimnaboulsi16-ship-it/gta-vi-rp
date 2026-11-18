@@ -5,15 +5,80 @@
 
 import React, { useState, useEffect } from 'react';
 import { 
-  Play, Pause, Volume2, VolumeX, Maximize, ShieldCheck, Zap, Code, 
-  Terminal, DollarSign, CheckCircle2, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Star, 
-  Users, Trophy, ArrowRight, Lock, Sparkles, HelpCircle, AlertCircle,
-  Clock, Flame, Check, CreditCard, X, MessageSquare, Timer, ShoppingBag, Radio,
-  MoreVertical, CheckCheck, Eye, Gift
+  Play, Pause, Volume2, VolumeX, Maximize, ShieldCheck, Zap,
+  CheckCircle2, ChevronDown, ChevronUp, Lock, Sparkles, HelpCircle,
+  Check, CreditCard, X, ShoppingBag, CheckCheck, Gift
 } from 'lucide-react';
-import courseModuleAiImg from './assets/images/course_module_ai_1793160202557.jpg';
-import gta6HeroBannerImg from './assets/images/gta6_hero_banner_1793160202521.jpg';
-import gta6CdEditionImg from './assets/images/gta6_cd_edition_1794940953257.jpg';
+import courseModuleAiImg from './assets/optimized/course_module_ai.webp';
+import gta6HeroBannerImg from './assets/optimized/gta6_hero_banner.webp';
+import gta6CdEditionImg from './assets/optimized/gta6_cd_edition.webp';
+import streamerCerolImg from './assets/optimized/streamer_cerol.webp';
+import streamerPaulinhoImg from './assets/optimized/streamer_paulinho.webp';
+import streamerCoringaImg from './assets/optimized/streamer_coringa.webp';
+import streamerLuquet4Img from './assets/optimized/streamer_luquet4.webp';
+import conversaWhatsapp1Img from './assets/optimized/conversa_whatsapp_1.webp';
+import conversaWhatsapp2Img from './assets/optimized/conversa_whatsapp_2.webp';
+import { syncInitialPageViewCapi, trackMetaEvent } from './lib/tracking';
+
+const BUYERS_LIST = [
+  { name: "Lucas Mendes (SP)", time: "Há alguns segundos" },
+  { name: "Matheus Rodrigues (RJ)", time: "Há 1 minuto" },
+  { name: "Gabriel Souza (MG)", time: "Há 45 segundos" },
+  { name: "João Victor (PR)", time: "Há 2 minutos" },
+  { name: "Felipe Azevedo (SC)", time: "Há 30 segundos" },
+  { name: "Carlos Eduardo (BA)", time: "Há 1 minuto" },
+  { name: "Rafael Silveira (RS)", time: "Há 10 segundos" },
+];
+
+const LiveCountNumber = React.memo(function LiveCountNumber({ formatted = true }: { formatted?: boolean }) {
+  const [viewerCount, setViewerCount] = useState(3425);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setViewerCount(prev => prev + Math.floor(Math.random() * 7) - 3);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return <>{formatted ? viewerCount.toLocaleString('pt-BR') : viewerCount}</>;
+});
+
+const RecentBuyerToast = React.memo(function RecentBuyerToast() {
+  const [recentBuyer, setRecentBuyer] = useState({ name: "Lucas Mendes (SP)", time: "Há 12 segundos" });
+  const [showBuyerToast, setShowBuyerToast] = useState(true);
+
+  useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    const buyerInterval = setInterval(() => {
+      setShowBuyerToast(false);
+      timeoutId = setTimeout(() => {
+        const randomBuyer = BUYERS_LIST[Math.floor(Math.random() * BUYERS_LIST.length)];
+        setRecentBuyer(randomBuyer);
+        setShowBuyerToast(true);
+      }, 500);
+    }, 7000);
+
+    return () => {
+      clearInterval(buyerInterval);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, []);
+
+  if (!showBuyerToast) return null;
+
+  return (
+    <div className="fixed bottom-4 left-4 z-50 bg-zinc-900/95 border border-rose-500/40 backdrop-blur-md rounded-xl p-3.5 shadow-2xl flex items-center gap-3 animate-bounce max-w-xs">
+      <div className="w-9 h-9 rounded-lg bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-md">
+        <ShoppingBag className="w-5 h-5" />
+      </div>
+      <div className="text-xs">
+        <span className="font-bold text-white">{recentBuyer.name}</span>
+        <p className="text-rose-500 font-semibold">comprou e aproveitou a <span className="underline">Black Friday</span>!</p>
+        <span className="text-[10px] text-zinc-400">{recentBuyer.time}</span>
+      </div>
+    </div>
+  );
+});
 
 export default function App() {
   // VSL State
@@ -22,18 +87,6 @@ export default function App() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration] = useState(342); // 5:42 video duration
   const [showTranscript, setShowTranscript] = useState(false);
-  const [viewerCount, setViewerCount] = useState(3425);
-
-  // Dynamic live buyers count (starts around 3421 and increments)
-  const [lifeChangedCount, setLifeChangedCount] = useState(3421);
-
-  // Recent buyer popup toast state
-  const [recentBuyer, setRecentBuyer] = useState({ name: "Lucas Mendes (SP)", time: "Há 12 segundos" });
-  const [showBuyerToast, setShowBuyerToast] = useState(true);
-
-  // Black Friday Countdown Timer State (e.g. 11 hours 42 mins 15 secs)
-  const [timeLeft, setTimeLeft] = useState({ hours: 11, minutes: 42, seconds: 15 });
-
 
   // FAQ State
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -45,72 +98,18 @@ export default function App() {
 
   // Simulated VSL timer
   useEffect(() => {
-    let interval: any;
-    if (isPlaying) {
-      interval = setInterval(() => {
-        setCurrentTime((prev) => {
-          if (prev >= duration) {
-            setIsPlaying(false);
-            return duration;
-          }
-          return prev + 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying, duration]);
-
-  // Randomize viewer count and life changed count to simulate active purchases
-  useEffect(() => {
+    if (!isPlaying) return;
     const interval = setInterval(() => {
-      setViewerCount(prev => prev + Math.floor(Math.random() * 7) - 3);
-      if (Math.random() > 0.4) {
-        setLifeChangedCount(prev => prev + 1);
-      }
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Cycle recent buyers every 7 seconds
-  useEffect(() => {
-    const buyersList = [
-      { name: "Lucas Mendes (SP)", time: "Há alguns segundos" },
-      { name: "Matheus Rodrigues (RJ)", time: "Há 1 minuto" },
-      { name: "Gabriel Souza (MG)", time: "Há 45 segundos" },
-      { name: "João Victor (PR)", time: "Há 2 minutos" },
-      { name: "Felipe Azevedo (SC)", time: "Há 30 segundos" },
-      { name: "Carlos Eduardo (BA)", time: "Há 1 minuto" },
-      { name: "Rafael Silveira (RS)", time: "Há 10 segundos" },
-    ];
-
-    const buyerInterval = setInterval(() => {
-      setShowBuyerToast(false);
-      setTimeout(() => {
-        const randomBuyer = buyersList[Math.floor(Math.random() * buyersList.length)];
-        setRecentBuyer(randomBuyer);
-        setShowBuyerToast(true);
-      }, 500);
-    }, 7000);
-
-    return () => clearInterval(buyerInterval);
-  }, []);
-
-  // Black Friday countdown ticker
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
+      setCurrentTime((prev) => {
+        if (prev >= duration) {
+          setIsPlaying(false);
+          return duration;
         }
-        return { hours: 12, minutes: 0, seconds: 0 };
+        return prev + 1;
       });
     }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+    return () => clearInterval(interval);
+  }, [isPlaying, duration]);
 
   const formatTime = (secs: number) => {
     const mins = Math.floor(secs / 60);
@@ -127,9 +126,46 @@ export default function App() {
     setCheckoutStep('success');
   };
 
-  const scrollToPricing = () => {
-    const el = document.getElementById('pricing-section');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  // Sync initial PageView to Meta CAPI (same event_id as browser Pixel) and track ViewContent on offer view
+  useEffect(() => {
+    syncInitialPageViewCapi();
+
+    const pricingEl = document.getElementById('pricing-section');
+    if (!pricingEl || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          trackMetaEvent(
+            'ViewContent',
+            {
+              value: 47,
+              currency: 'BRL',
+              content_name: 'Mestres do GTA VI RP com IA',
+            },
+            { onceKey: 'pricing_section_view' }
+          );
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(pricingEl);
+    return () => observer.disconnect();
+  }, []);
+
+  const handleCheckoutClick = () => {
+    trackMetaEvent(
+      'InitiateCheckout',
+      {
+        value: 47,
+        currency: 'BRL',
+        content_name: 'Mestres do GTA VI RP com IA',
+        num_items: 1,
+      },
+      { cooldownMs: 2000 }
+    );
   };
 
   return (
@@ -158,8 +194,12 @@ export default function App() {
             <img
               src={gta6CdEditionImg}
               alt="GTA VI Edição Física e Disco"
+              width={640}
+              height={478}
               className="w-full h-auto object-cover block"
               loading="eager"
+              decoding="async"
+              fetchPriority="high"
               referrerPolicy="no-referrer"
             />
           </div>
@@ -169,7 +209,7 @@ export default function App() {
         <div className="flex items-center justify-center mb-5">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-medium text-zinc-300 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-            <span><strong className="text-white font-mono">{viewerCount.toLocaleString('pt-BR')}</strong> pessoas online agora</span>
+            <span><strong className="text-white font-mono"><LiveCountNumber /></strong> pessoas online agora</span>
           </div>
         </div>
 
@@ -191,7 +231,7 @@ export default function App() {
           {/* Live Viewer badge in RED */}
           <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1 bg-black/80 backdrop-blur-md rounded-full border border-rose-500/40 text-xs font-medium text-rose-500">
             <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-            <span className="text-rose-500 font-bold">🔴 {viewerCount} pessoas assistindo agora</span>
+            <span className="text-rose-500 font-bold">🔴 <LiveCountNumber formatted={false} /> pessoas assistindo agora</span>
           </div>
 
           <div className="absolute top-4 right-4 z-20 flex items-center gap-2 px-3 py-1 bg-rose-500 text-white font-bold backdrop-blur-md rounded-full text-xs uppercase tracking-wider shadow-md">
@@ -203,6 +243,11 @@ export default function App() {
             <img 
               src={gta6HeroBannerImg} 
               alt="GTA VI RP Map Maker Preview" 
+              width={1024}
+              height={572}
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
               className={`w-full h-full object-cover transition-transform duration-700 ${isPlaying ? 'scale-105 opacity-90' : 'group-hover:scale-105'}`}
             />
             
@@ -333,7 +378,7 @@ export default function App() {
       </section>
 
       {/* FAMOUS STREAMERS SECTION (GTA RP & GTA VI) */}
-      <section className="py-20 px-4 md:px-8 max-w-6xl mx-auto">
+      <section className="cv-auto py-20 px-4 md:px-8 max-w-6xl mx-auto">
         <div className="text-center mb-16">
 
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
@@ -349,8 +394,12 @@ export default function App() {
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-all group">
             <div className="aspect-square relative overflow-hidden bg-zinc-950">
               <img 
-                src="/assets/aistudio/images__2__eb194e58.jpg" 
+                src={streamerCerolImg} 
                 alt="Cerol" 
+                width={560}
+                height={840}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             </div>
@@ -363,8 +412,12 @@ export default function App() {
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-all group">
             <div className="aspect-square relative overflow-hidden bg-zinc-950">
               <img 
-                src="/assets/aistudio/images_aca61ee6.jpg" 
+                src={streamerPaulinhoImg} 
                 alt="Paulinho O Loko" 
+                width={560}
+                height={560}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             </div>
@@ -377,8 +430,12 @@ export default function App() {
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-all group">
             <div className="aspect-square relative overflow-hidden bg-zinc-950">
               <img 
-                src="/assets/aistudio/images__1__1b5fff10.jpg" 
+                src={streamerCoringaImg} 
                 alt="Coringa" 
+                width={560}
+                height={747}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             </div>
@@ -391,8 +448,12 @@ export default function App() {
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-all group">
             <div className="aspect-square relative overflow-hidden bg-zinc-950">
               <img 
-                src="/assets/aistudio/images__3__481fe476.jpg" 
+                src={streamerLuquet4Img} 
                 alt="Luquet4" 
+                width={560}
+                height={703}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             </div>
@@ -472,8 +533,11 @@ export default function App() {
               <img 
                 src={courseModuleAiImg} 
                 alt="AI Code Generator Dashboard" 
+                width={900}
+                height={672}
                 className="w-full h-auto object-cover"
-                loading="eager"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>
@@ -482,11 +546,11 @@ export default function App() {
 
 
       {/* SOCIAL PROOF SECTION: Pessoas que já começaram antes de lançar o GTA VI */}
-      <section id="provas-sociais" className="py-20 px-2 sm:px-4 max-w-7xl mx-auto overflow-hidden">
+      <section id="provas-sociais" className="cv-auto py-20 px-2 sm:px-4 max-w-7xl mx-auto overflow-hidden">
         <div className="text-center mb-10 px-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-medium text-zinc-300 mb-4 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-            <span><strong className="text-white font-mono">{viewerCount.toLocaleString('pt-BR')}</strong> pessoas online agora</span>
+            <span><strong className="text-white font-mono"><LiveCountNumber /></strong> pessoas online agora</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
             Pessoas que já começaram antes de lançar o GTA VI
@@ -510,8 +574,12 @@ export default function App() {
                 <div className="bg-[#111b21] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[560px] w-[330px] sm:w-[370px] flex-shrink-0">
                   <div className="relative w-full h-full bg-[#0b141a] overflow-hidden">
                     <img 
-                      src="/assets/aistudio/Conversa_WhatsApp_em_Tema_Escuro_e052e497.png" 
+                      src={conversaWhatsapp1Img} 
                       alt="Conversa WhatsApp aluno com servidor pronto" 
+                      width={595}
+                      height={1072}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover object-top select-none"
                     />
                   </div>
@@ -521,8 +589,12 @@ export default function App() {
                 <div className="bg-[#111b21] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[560px] w-[330px] sm:w-[370px] flex-shrink-0">
                   <div className="relative w-full h-full bg-[#0b141a] overflow-hidden">
                     <img 
-                      src="/assets/aistudio/Conversa_sobre_o_lan_amento_do_GTA_6_36bb1bb8.png" 
+                      src={conversaWhatsapp2Img} 
                       alt="Conversa WhatsApp contratos e pagamentos com IA" 
+                      width={607}
+                      height={1113}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover object-top select-none"
                     />
                   </div>
@@ -668,7 +740,7 @@ export default function App() {
 
 
       {/* PRICING & BLACK FRIDAY OFFER SECTION (Main Checkout Button at Bottom) */}
-      <section id="pricing-section" className="pt-8 pb-20 px-4 md:px-8 max-w-4xl mx-auto">
+      <section id="pricing-section" className="cv-auto pt-8 pb-20 px-4 md:px-8 max-w-4xl mx-auto">
         <div className="mb-8 flex justify-center">
           <p className="text-sm sm:text-base text-zinc-200 bg-zinc-900/90 border border-zinc-800 rounded-2xl px-6 py-4 max-w-2xl text-center leading-relaxed shadow-lg">
             Você não precisa nem ter o <strong className="text-white">GTA VI</strong> instalado nem ter um <strong className="text-white">PS5</strong>, <span className="text-amber-400 font-semibold">apenas o método certo para começar a fazer dinheiro.</span>
@@ -684,7 +756,7 @@ export default function App() {
           <div className="text-center max-w-2xl mx-auto mb-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-medium text-zinc-300 mb-4 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-              <span><strong className="text-white font-mono">{viewerCount.toLocaleString('pt-BR')}</strong> pessoas online agora</span>
+              <span><strong className="text-white font-mono"><LiveCountNumber /></strong> pessoas online agora</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
               Bora sair do <span className="text-rose-500 font-extrabold">CLT</span> aproveitando esse mega <span className="text-rose-500 font-extrabold underline">desconto</span> da <span className="text-rose-500">Black Friday</span>.
@@ -774,9 +846,10 @@ export default function App() {
 
             {/* MAIN CHECKOUT BUTTON AT BOTTOM (Pulsing) */}
             <a 
-              href="https://pay.kirvano.com/e5337846-5d0d-4b85-9aba-9a3911e13492"
+              href="https://pay.wiapy.com/F6rGZIyQZ1UL"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={handleCheckoutClick}
               className="w-full py-6 bg-rose-500 hover:bg-rose-400 text-white font-black text-xl rounded-2xl shadow-xl shadow-rose-500/50 transition-all transform hover:scale-105 flex items-center justify-center gap-3 animate-pulse text-center"
             >
               <Zap className="w-6 h-6 fill-white" />
@@ -798,7 +871,7 @@ export default function App() {
       </section>
 
       {/* FAQ SECTION */}
-      <section id="faq" className="py-20 px-4 md:px-8 max-w-3xl mx-auto">
+      <section id="faq" className="cv-auto py-20 px-4 md:px-8 max-w-3xl mx-auto">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold mb-4">
             <HelpCircle className="w-3.5 h-3.5 text-rose-500" />
@@ -853,7 +926,7 @@ export default function App() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-zinc-800 bg-zinc-950 py-12 px-4 text-center text-xs text-zinc-500">
+      <footer className="cv-auto border-t border-zinc-800 bg-zinc-950 py-12 px-4 text-center text-xs text-zinc-500">
         <div className="max-w-6xl mx-auto space-y-4">
           <div className="flex items-center justify-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center font-extrabold text-white text-xs">
@@ -871,18 +944,7 @@ export default function App() {
       </footer>
 
       {/* FLOATING RECENT BUYER TOAST (Bottom fixed banner) */}
-      {showBuyerToast && (
-        <div className="fixed bottom-4 left-4 z-50 bg-zinc-900/95 border border-rose-500/40 backdrop-blur-md rounded-xl p-3.5 shadow-2xl flex items-center gap-3 animate-bounce max-w-xs">
-          <div className="w-9 h-9 rounded-lg bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-md">
-            <ShoppingBag className="w-5 h-5" />
-          </div>
-          <div className="text-xs">
-            <span className="font-bold text-white">{recentBuyer.name}</span>
-            <p className="text-rose-500 font-semibold">comprou e aproveitou a <span className="underline">Black Friday</span>!</p>
-            <span className="text-[10px] text-zinc-400">{recentBuyer.time}</span>
-          </div>
-        </div>
-      )}
+      <RecentBuyerToast />
 
       {/* CHECKOUT MODAL */}
       {isCheckoutOpen && (
@@ -963,9 +1025,10 @@ export default function App() {
 
                   <div className="pt-4">
                     <a 
-                      href="https://pay.kirvano.com/e5337846-5d0d-4b85-9aba-9a3911e13492"
+                      href="https://pay.wiapy.com/F6rGZIyQZ1UL"
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={handleCheckoutClick}
                       className="block text-center w-full py-4 bg-rose-500 hover:bg-rose-400 text-white font-extrabold rounded-xl shadow-lg shadow-rose-500/30 transition-all text-sm animate-pulse"
                     >
                       GARANTIR PREÇO DE BLACK FRIDAY (R$ 47)
