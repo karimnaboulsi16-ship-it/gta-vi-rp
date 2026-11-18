@@ -32,9 +32,25 @@
     <script>
       if (!window.__metaPixelInitialized) {
         window.__metaPixelInitialized = true;
+        window.__metaInitPixels = window.__metaInitPixels || {};
         !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        {if(f.fbq)return;n=f.fbq=function(){
+        var args=Array.prototype.slice.call(arguments);
+        var cmd=args[0];
+        if(cmd==='init'){
+          var pid=String(args[1]||'');
+          if(f.__metaInitPixels[pid])return;
+          f.__metaInitPixels[pid]=true;
+        }else if(cmd==='track'){
+          var ev=args[1];
+          var opts=args[3];
+          var hasId=Boolean(opts&&opts.eventID);
+          if(ev==='PageView'&&f.__metaPageViewTracked&&!hasId)return;
+          if(ev==='PageView')f.__metaPageViewTracked=true;
+          if(ev==='InitiateCheckout'&&!hasId&&f.__metaLastICAt&&(Date.now()-f.__metaLastICAt)<4000)return;
+          if(ev==='InitiateCheckout'&&hasId)f.__metaLastICAt=Date.now();
+        }
+        n.callMethod?n.callMethod.apply(n,args):n.queue.push(args)};
         if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
         n.queue=[];t=b.createElement(e);t.async=!0;
         t.src=v;s=b.getElementsByTagName(e)[0];

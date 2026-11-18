@@ -18,6 +18,9 @@ import streamerCoringaImg from './assets/optimized/streamer_coringa.webp';
 import streamerLuquet4Img from './assets/optimized/streamer_luquet4.webp';
 import conversaWhatsapp1Img from './assets/optimized/conversa_whatsapp_1.webp';
 import conversaWhatsapp2Img from './assets/optimized/conversa_whatsapp_2.webp';
+import gta6RpMapEditorImg from './assets/optimized/gta6_rp_map_editor.webp';
+import gta6RpLuaCodeImg from './assets/optimized/gta6_rp_lua_code.webp';
+import gta6RpServerPanelImg from './assets/optimized/gta6_rp_server_panel.webp';
 import { syncInitialPageViewCapi, trackMetaEvent } from './lib/tracking';
 
 const BUYERS_LIST = [
@@ -738,6 +741,73 @@ export default function App() {
         </div>
       </section>
 
+      {/* GTA VI RP PROGRAMMING GALLERY */}
+      <section className="cv-auto py-16 px-4 md:px-8 max-w-6xl mx-auto">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
+            Na Prática: Programação de <span className="text-amber-400">Mapas e Sistemas</span> no GTA VI RP
+          </h2>
+          <p className="text-zinc-300 max-w-2xl mx-auto text-sm sm:text-base">
+            Veja como ficam os ambientes 3D, códigos gerados por IA e painéis de servidores que donos de cidades pagam caro para ter.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-colors">
+            <div className="aspect-[4/3] bg-zinc-950 overflow-hidden">
+              <img
+                src={gta6RpMapEditorImg}
+                alt="Editor 3D de mapas para GTA VI RP em Vice City"
+                width={720}
+                height={538}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-4">
+              <h3 className="text-base font-bold text-white mb-1">Modelagem & Mapas 3D</h3>
+              <p className="text-xs text-zinc-400">Criação de boates, ruas e mansões em Vice City com coordenadas automáticas.</p>
+            </div>
+          </div>
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-colors">
+            <div className="aspect-[4/3] bg-zinc-950 overflow-hidden">
+              <img
+                src={gta6RpLuaCodeImg}
+                alt="Programação de scripts Lua e JavaScript para servidores GTA VI RP"
+                width={720}
+                height={538}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-4">
+              <h3 className="text-base font-bold text-white mb-1">Scripts Lua & JavaScript por IA</h3>
+              <p className="text-xs text-zinc-400">Sistemas completos de carros, empregos e economia gerados em minutos.</p>
+            </div>
+          </div>
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-colors">
+            <div className="aspect-[4/3] bg-zinc-950 overflow-hidden">
+              <img
+                src={gta6RpServerPanelImg}
+                alt="Estação de programação com HUD e modelagem para GTA VI RP"
+                width={720}
+                height={538}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-4">
+              <h3 className="text-base font-bold text-white mb-1">HUDs & Cidades Completas</h3>
+              <p className="text-xs text-zinc-400">Interfaces personalizadas e painéis prontos para servidores de alto faturamento.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* PRICING & BLACK FRIDAY OFFER SECTION (Main Checkout Button at Bottom) */}
       <section id="pricing-section" className="cv-auto pt-8 pb-20 px-4 md:px-8 max-w-4xl mx-auto">
@@ -769,79 +839,104 @@ export default function App() {
           {/* Pricing Box */}
           <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 sm:p-8 max-w-xl mx-auto mb-8 text-center">
             
-            {/* Preço Riscado (Âncora de R$ 235) */}
-            <div className="flex items-center justify-center gap-2 mb-2 text-zinc-400 text-sm">
-              <span>De</span>
-              <span className="text-zinc-500 text-lg sm:text-xl font-bold line-through">R$ 235</span>
-              <span>por apenas</span>
-            </div>
-
-            {/* Installment Price LARGER as primary, Cash Price smaller underneath (R$ 47) */}
-            <div className="text-zinc-400 text-xs font-semibold uppercase tracking-wider mb-2">Parcelado no Cartão em até 4x</div>
-            <div className="text-4xl sm:text-6xl lg:text-7xl font-black text-rose-500 tracking-tight drop-shadow-[0_0_35px_rgba(244,63,94,0.35)] mb-2 flex items-baseline justify-center gap-2">
-              <span className="text-2xl sm:text-3xl font-extrabold text-zinc-300">4x de</span>
-              <span className="bg-gradient-to-r from-rose-400 via-rose-500 to-red-500 bg-clip-text text-transparent">R$ 11</span>
-            </div>
-            <div className="text-zinc-400 text-sm mb-6 flex items-center justify-center gap-1.5 font-medium">
-              <span>ou</span>
-              <span className="text-white font-bold bg-zinc-900 border border-zinc-800 px-2.5 py-0.5 rounded-md text-base">R$ 47</span>
-              <span>à vista</span>
+            {/* Foto do produto em cima da oferta (no lugar do preço) */}
+            <div className="mb-6 flex justify-center">
+              <img
+                src="/assets/aistudio/mestres_gta_vi_rp_2mb_fc6cc9fd.jpg"
+                alt="Mestres GTA VI RP"
+                width={1199}
+                height={1312}
+                loading="lazy"
+                decoding="async"
+                className="w-full max-w-sm h-auto rounded-2xl border border-zinc-800 shadow-2xl shadow-rose-500/10"
+              />
             </div>
 
             <div className="space-y-3 text-left mb-8 border-t border-zinc-800 pt-6">
-              {/* Itens inclusos (brancos) */}
-              <div className="flex items-center gap-3 text-sm text-zinc-200">
-                <Check className="w-5 h-5 text-rose-500 shrink-0" />
+              {/* Itens inclusos (escrita em branco, check verde) */}
+              <div className="flex items-center gap-3 text-sm text-white">
+                <Check className="w-5 h-5 text-green-500 shrink-0" />
                 <span>Acesso Vitalício a Todos os Módulos Práticos do Zero ao Avançado</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-200">
-                <Check className="w-5 h-5 text-rose-500 shrink-0" />
+              <div className="flex items-center gap-3 text-sm text-white">
+                <Check className="w-5 h-5 text-green-500 shrink-0" />
                 <span>Pack com +100.000 Prompts Prontos para IA Gerar Mapas e Códigos</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-200">
-                <Check className="w-5 h-5 text-rose-500 shrink-0" />
+              <div className="flex items-center gap-3 text-sm text-white">
+                <Check className="w-5 h-5 text-green-500 shrink-0" />
                 <span>Comunidade VIP no Discord com Donos de Servidores</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-200">
-                <Check className="w-5 h-5 text-rose-500 shrink-0" />
+              <div className="flex items-center gap-3 text-sm text-white">
+                <Check className="w-5 h-5 text-green-500 shrink-0" />
                 <span>Aprenda todos os métodos que podem te fazer ganhar dinheiro com GTA VI</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-200">
-                <Check className="w-5 h-5 text-rose-500 shrink-0" />
-                <span>10.000 vídeos prontos sobre GTA VI para postar nas redes sociais e monetizar</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-200">
-                <Check className="w-5 h-5 text-rose-500 shrink-0" />
+              <div className="flex items-center gap-3 text-sm text-white">
+                <Check className="w-5 h-5 text-green-500 shrink-0" />
                 <span>Aprenda onde divulgar seu mapa e como</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-200">
-                <Check className="w-5 h-5 text-rose-500 shrink-0" />
+              <div className="flex items-center gap-3 text-sm text-white">
+                <Check className="w-5 h-5 text-green-500 shrink-0" />
                 <span>Aprenda como precificar seu trabalho</span>
               </div>
 
-              {/* Bônus exclusivos (rosas abaixo dos brancos) */}
+              {/* Bônus exclusivos (presente colorido, escrita em branco) */}
               <div className="pt-2 space-y-3 border-t border-zinc-800/70">
                 <div className="flex items-center gap-3 text-sm">
                   <Gift className="w-5 h-5 text-rose-400 shrink-0" />
-                  <span className="font-bold text-rose-400">50 IAs grátis para usar</span>
+                  <span className="font-bold text-white">10.000 vídeos prontos sobre GTA VI para postar nas redes sociais e monetizar</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <Gift className="w-5 h-5 text-rose-400 shrink-0" />
-                  <span className="font-bold text-rose-400">Ferramentas secretas de mapeamento 3D</span>
+                  <span className="font-bold text-white">50 IAs grátis para usar</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <Gift className="w-5 h-5 text-rose-400 shrink-0" />
-                  <span className="font-bold text-rose-400">Suporte direto com especialistas</span>
+                  <span className="font-bold text-white">Ferramentas secretas de mapeamento 3D</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <Gift className="w-5 h-5 text-rose-400 shrink-0" />
-                  <span className="font-bold text-rose-400">Chamada de vídeo direta com especialistas</span>
+                  <span className="font-bold text-white">Suporte direto com especialistas</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <Gift className="w-5 h-5 text-rose-400 shrink-0" />
-                  <span className="font-bold text-rose-400">Garantia incondicional de 30 dias</span>
+                  <span className="font-bold text-white">Chamada de vídeo direta com especialistas</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                  <Gift className="w-5 h-5 text-rose-400 shrink-0" />
+                  <span className="font-bold text-white">Garantia incondicional de 30 dias</span>
                 </div>
               </div>
+            </div>
+
+            {/* Valores e Parcelamento (embaixo da oferta e dos bônus) */}
+            <div className="border-t border-zinc-800 pt-6 mb-8">
+              {/* Preço Riscado (Âncora de R$ 235) */}
+              <div className="flex items-center justify-center gap-2 mb-2 text-zinc-400 text-sm">
+                <span>De</span>
+                <span className="text-zinc-500 text-lg sm:text-xl font-bold line-through">R$ 235</span>
+                <span>por apenas</span>
+              </div>
+
+              {/* Installment Price LARGER as primary, Cash Price smaller underneath (R$ 47) */}
+              <div className="text-zinc-400 text-xs font-semibold uppercase tracking-wider mb-2">Parcelado no Cartão em até 4x</div>
+              <div className="text-4xl sm:text-6xl lg:text-7xl font-black text-rose-500 tracking-tight drop-shadow-[0_0_35px_rgba(244,63,94,0.35)] mb-2 flex items-baseline justify-center gap-2">
+                <span className="text-2xl sm:text-3xl font-extrabold text-zinc-300">4x de</span>
+                <span className="bg-gradient-to-r from-rose-400 via-rose-500 to-red-500 bg-clip-text text-transparent">R$ 11</span>
+              </div>
+              <div className="text-zinc-400 text-sm flex items-center justify-center gap-1.5 font-medium">
+                <span>ou</span>
+                <span className="text-white font-bold bg-zinc-900 border border-zinc-800 px-2.5 py-0.5 rounded-md text-base">R$ 47</span>
+                <span>à vista</span>
+              </div>
+            </div>
+
+            <div className="mb-6 space-y-1.5 text-center">
+              <p className="text-sm sm:text-base font-bold text-white">
+                Este pode ser sua <span className="text-zinc-200">renda extra</span> ou até sua <span className="text-amber-400">renda principal</span>.
+              </p>
+              <p className="text-sm sm:text-base font-semibold italic text-zinc-300">
+                "Enquanto todo mundo joga, você faz dinheiro. Aproveite."
+              </p>
             </div>
 
             {/* MAIN CHECKOUT BUTTON AT BOTTOM (Pulsing) */}
@@ -850,7 +945,7 @@ export default function App() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleCheckoutClick}
-              className="w-full py-6 bg-rose-500 hover:bg-rose-400 text-white font-black text-xl rounded-2xl shadow-xl shadow-rose-500/50 transition-all transform hover:scale-105 flex items-center justify-center gap-3 animate-pulse text-center"
+              className="w-full py-6 bg-green-500 hover:bg-green-400 text-white font-black text-xl rounded-2xl shadow-xl shadow-green-500/50 transition-all transform hover:scale-105 flex items-center justify-center gap-3 animate-pulse text-center"
             >
               <Zap className="w-6 h-6 fill-white" />
               <span>QUERO GANHAR DINHEIRO COM GTA VI</span>
@@ -1029,7 +1124,7 @@ export default function App() {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={handleCheckoutClick}
-                      className="block text-center w-full py-4 bg-rose-500 hover:bg-rose-400 text-white font-extrabold rounded-xl shadow-lg shadow-rose-500/30 transition-all text-sm animate-pulse"
+                      className="block text-center w-full py-4 bg-green-500 hover:bg-green-400 text-white font-extrabold rounded-xl shadow-lg shadow-green-500/30 transition-all text-sm animate-pulse"
                     >
                       GARANTIR PREÇO DE BLACK FRIDAY (R$ 47)
                     </a>
