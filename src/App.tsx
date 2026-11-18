@@ -47,37 +47,55 @@ const LiveCountNumber = React.memo(function LiveCountNumber({ formatted = true }
 });
 
 const RecentBuyerToast = React.memo(function RecentBuyerToast() {
-  const [recentBuyer, setRecentBuyer] = useState({ name: "Lucas Mendes (SP)", time: "Há 12 segundos" });
+  const [buyerIndex, setBuyerIndex] = useState(0);
   const [showBuyerToast, setShowBuyerToast] = useState(true);
 
   useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    const buyerInterval = setInterval(() => {
-      setShowBuyerToast(false);
-      timeoutId = setTimeout(() => {
-        const randomBuyer = BUYERS_LIST[Math.floor(Math.random() * BUYERS_LIST.length)];
-        setRecentBuyer(randomBuyer);
-        setShowBuyerToast(true);
-      }, 500);
-    }, 7000);
+    let active = true;
+    let timerId: ReturnType<typeof setTimeout> | undefined;
+
+    const scheduleHide = () => {
+      timerId = setTimeout(() => {
+        if (!active) return;
+        setShowBuyerToast(false);
+        const randomDelayMs = 5000 + Math.floor(Math.random() * 5001); // 5s to 10s
+        timerId = setTimeout(() => {
+          if (!active) return;
+          setBuyerIndex((prev) => {
+            if (BUYERS_LIST.length <= 1) return 0;
+            let next = Math.floor(Math.random() * BUYERS_LIST.length);
+            if (next === prev) next = (prev + 1) % BUYERS_LIST.length;
+            return next;
+          });
+          setShowBuyerToast(true);
+          scheduleHide();
+        }, randomDelayMs);
+      }, 3400);
+    };
+
+    scheduleHide();
 
     return () => {
-      clearInterval(buyerInterval);
-      if (timeoutId) clearTimeout(timeoutId);
+      active = false;
+      if (timerId) clearTimeout(timerId);
     };
   }, []);
 
   if (!showBuyerToast) return null;
 
+  const recentBuyer = BUYERS_LIST[buyerIndex];
+
   return (
-    <div className="fixed bottom-4 left-4 z-50 bg-zinc-900/95 border border-rose-500/40 backdrop-blur-md rounded-xl p-3.5 shadow-2xl flex items-center gap-3 animate-bounce max-w-xs">
-      <div className="w-9 h-9 rounded-lg bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-md">
-        <ShoppingBag className="w-5 h-5" />
+    <div className="animate-toast-bob fixed bottom-2.5 left-2.5 sm:bottom-4 sm:left-4 z-50 bg-zinc-900/95 border border-rose-500/40 backdrop-blur-md rounded-lg sm:rounded-xl p-2 sm:p-2.5 shadow-xl flex items-center gap-2 sm:gap-2.5 max-w-[200px] sm:max-w-[250px] pointer-events-none">
+      <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-md sm:rounded-lg bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+        <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
       </div>
-      <div className="text-xs">
-        <span className="font-bold text-white">{recentBuyer.name}</span>
-        <p className="text-rose-500 font-semibold">comprou e aproveitou a <span className="underline">Black Friday</span>!</p>
-        <span className="text-[10px] text-zinc-400">{recentBuyer.time}</span>
+      <div className="min-w-0 text-[10px] sm:text-xs leading-tight">
+        <span className="font-bold text-white block truncate">{recentBuyer.name}</span>
+        <p className="text-rose-400 font-semibold">
+          comprou na <span className="underline">Black Friday</span>!
+        </p>
+        <span className="text-[9px] sm:text-[10px] text-zinc-400 block mt-0.5">{recentBuyer.time}</span>
       </div>
     </div>
   );
@@ -239,6 +257,14 @@ export default function App() {
       {/* HERO SECTION WITH VSL */}
       <section id="vsl" className="relative pt-8 pb-16 px-4 md:px-8 max-w-6xl mx-auto">
         
+        {/* Live Online Count Badge above Image & Headline */}
+        <div className="flex items-center justify-center mb-5">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-medium text-zinc-300 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+            <span><strong className="text-white font-mono"><LiveCountNumber /></strong> pessoas online agora</span>
+          </div>
+        </div>
+
         {/* GTA VI CD Showcase Image above Headline */}
         <div className="flex justify-center mb-6">
           <div className="relative w-64 sm:w-72 md:w-80 rounded-2xl overflow-hidden border border-pink-500/30 bg-zinc-950 shadow-2xl shadow-pink-500/15">
@@ -253,14 +279,6 @@ export default function App() {
               fetchPriority="high"
               referrerPolicy="no-referrer"
             />
-          </div>
-        </div>
-
-        {/* Live Online Count Badge above Headline */}
-        <div className="flex items-center justify-center mb-5">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-medium text-zinc-300 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-            <span><strong className="text-white font-mono"><LiveCountNumber /></strong> pessoas online agora</span>
           </div>
         </div>
 
@@ -405,6 +423,20 @@ export default function App() {
           <p className="text-center text-sm sm:text-base font-semibold italic text-zinc-300 mt-1.5">
             "Enquanto todo mundo joga, você faz dinheiro. Aproveite."
           </p>
+
+          <div className="mt-6 max-w-xl mx-auto">
+            <a
+              href="#pricing-section"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="btn-checkout-glow w-full py-6 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-black text-xl rounded-2xl border border-green-300/60 transition-all transform hover:scale-105 flex items-center justify-center gap-3 text-center"
+            >
+              <Zap className="w-6 h-6 fill-white relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
+              <span className="relative z-10 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]">QUERO GANHAR DINHEIRO COM GTA VI</span>
+            </a>
+          </div>
         </div>
 
       </section>
@@ -443,9 +475,9 @@ export default function App() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {/* Streamer 1: Cerol */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-all group">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-all group">
             <div className="aspect-square relative overflow-hidden bg-zinc-950">
               <img 
                 src={streamerCerolImg} 
@@ -457,13 +489,13 @@ export default function App() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             </div>
-            <div className="p-5 text-center">
-              <h3 className="text-lg font-bold text-white">Cerol</h3>
+            <div className="p-3 sm:p-5 text-center">
+              <h3 className="text-sm sm:text-lg font-bold text-white">Cerol</h3>
             </div>
           </div>
 
           {/* Streamer 2: Paulinho O Loko */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-all group">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-all group">
             <div className="aspect-square relative overflow-hidden bg-zinc-950">
               <img 
                 src={streamerPaulinhoImg} 
@@ -475,13 +507,13 @@ export default function App() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             </div>
-            <div className="p-5 text-center">
-              <h3 className="text-lg font-bold text-white">Paulinho O Loko</h3>
+            <div className="p-3 sm:p-5 text-center">
+              <h3 className="text-sm sm:text-lg font-bold text-white">Paulinho O Loko</h3>
             </div>
           </div>
 
           {/* Streamer 3: Coringa */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-all group">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-all group">
             <div className="aspect-square relative overflow-hidden bg-zinc-950">
               <img 
                 src={streamerCoringaImg} 
@@ -493,13 +525,13 @@ export default function App() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             </div>
-            <div className="p-5 text-center">
-              <h3 className="text-lg font-bold text-white">Coringa</h3>
+            <div className="p-3 sm:p-5 text-center">
+              <h3 className="text-sm sm:text-lg font-bold text-white">Coringa</h3>
             </div>
           </div>
 
           {/* Streamer 4: Luquet4 */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-all group">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl hover:border-zinc-700 transition-all group">
             <div className="aspect-square relative overflow-hidden bg-zinc-950">
               <img 
                 src={streamerLuquet4Img} 
@@ -511,8 +543,8 @@ export default function App() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             </div>
-            <div className="p-5 text-center">
-              <h3 className="text-lg font-bold text-white">Luquet4</h3>
+            <div className="p-3 sm:p-5 text-center">
+              <h3 className="text-sm sm:text-lg font-bold text-white">Luquet4</h3>
             </div>
           </div>
         </div>
@@ -609,9 +641,6 @@ export default function App() {
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
             Pessoas que já começaram antes de lançar o GTA VI
           </h2>
-          <p className="text-zinc-300 max-w-3xl mx-auto text-base sm:text-lg leading-relaxed">
-            Veja conversas reais de alunos que não esperaram o jogo sair: já estão fechando parcerias, vendendo acessos, criando servidores e faturando alto com IA.
-          </p>
           <p className="text-zinc-400 text-xs sm:text-sm mt-2">
             (Alguns alunos desde o GTA V também)
           </p>
@@ -864,25 +893,25 @@ export default function App() {
       </section>
 
       {/* PRICING & BLACK FRIDAY OFFER SECTION (Main Checkout Button at Bottom) */}
-      <section id="pricing-section" className="cv-auto pt-8 pb-20 px-4 md:px-8 max-w-4xl mx-auto">
-        <div className="mb-8 flex justify-center">
-          <p className="text-sm sm:text-base text-zinc-200 bg-zinc-900/90 border border-zinc-800 rounded-2xl px-6 py-4 max-w-2xl text-center leading-relaxed shadow-lg">
+      <section id="pricing-section" className="cv-auto pt-8 pb-20 px-2 sm:px-4 md:px-8 max-w-5xl mx-auto">
+        <div className="mb-8 flex justify-center px-2 sm:px-0">
+          <p className="text-sm sm:text-base text-zinc-200 bg-zinc-900/90 border border-zinc-800 rounded-2xl px-4 sm:px-6 py-4 max-w-2xl text-center leading-relaxed shadow-lg">
             Você não precisa nem ter o <strong className="text-white">GTA VI</strong> instalado nem ter um <strong className="text-white">PS5</strong>, <span className="text-amber-400 font-semibold">apenas o método certo para começar a fazer dinheiro.</span>
           </p>
         </div>
 
-        <div className="relative rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-900 p-8 sm:p-12 shadow-2xl">
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-900 px-3 pt-12 pb-6 sm:p-12 shadow-2xl">
           
           <div className="absolute top-0 right-0 bg-rose-500 text-white text-xs font-extrabold px-6 py-2 rounded-bl-2xl uppercase tracking-widest shadow-md">
             ⚡ <span className="underline">BLACK FRIDAY</span>: 80% OFF
           </div>
 
-          <div className="text-center max-w-2xl mx-auto mb-10">
+          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 px-1">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-medium text-zinc-300 mb-4 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
               <span><strong className="text-white font-mono"><LiveCountNumber /></strong> pessoas online agora</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
               Bora sair do <span className="text-rose-500 font-extrabold">CLT</span> aproveitando esse mega <span className="text-rose-500 font-extrabold underline">desconto</span> da <span className="text-rose-500">Black Friday</span>.
             </h2>
             <p className="text-zinc-300 text-sm sm:text-base font-semibold">
@@ -891,7 +920,7 @@ export default function App() {
           </div>
 
           {/* Pricing Box */}
-          <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 sm:p-8 max-w-xl mx-auto mb-8 text-center">
+          <div className="bg-zinc-950 border border-zinc-800 rounded-xl sm:rounded-2xl px-3.5 py-5 sm:p-8 w-full max-w-2xl mx-auto mb-8 text-center">
             
             {/* Foto do produto em cima da oferta (no lugar do preço) */}
             <div className="mb-6 flex justify-center">
@@ -902,7 +931,7 @@ export default function App() {
                 height={1312}
                 loading="lazy"
                 decoding="async"
-                className="w-full max-w-sm h-auto rounded-2xl border border-zinc-800 shadow-2xl shadow-rose-500/10"
+                className="w-full max-w-md h-auto rounded-xl sm:rounded-2xl border border-zinc-800 shadow-2xl shadow-rose-500/10"
               />
             </div>
 
@@ -994,9 +1023,9 @@ export default function App() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleCheckoutClick}
-              className="btn-checkout-glow w-full py-6 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-black text-xl rounded-2xl border border-green-300/60 transition-all transform hover:scale-105 flex items-center justify-center gap-3 text-center"
+              className="btn-checkout-glow w-full py-5 sm:py-6 px-3 sm:px-6 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-black text-base sm:text-xl rounded-xl sm:rounded-2xl border border-green-300/60 transition-all transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 text-center"
             >
-              <Zap className="w-6 h-6 fill-white relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
+              <Zap className="w-5 h-5 sm:w-6 sm:h-6 fill-white relative z-10 shrink-0 drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
               <span className="relative z-10 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]">QUERO GANHAR DINHEIRO COM GTA VI</span>
             </a>
 
