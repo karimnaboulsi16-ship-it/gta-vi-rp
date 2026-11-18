@@ -131,19 +131,19 @@ const OfferExpiryTimer = React.memo(function OfferExpiryTimer() {
   }, []);
 
   return (
-    <div className="mt-4 rounded-xl bg-zinc-900/90 border border-rose-500/30 px-4 py-3 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center shadow-lg">
+    <div className="mt-4 rounded-xl bg-zinc-900/90 border border-[#F5B942]/35 px-4 py-3 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center shadow-lg">
       <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-zinc-200">
-        <Clock className="w-4 h-4 text-rose-500 shrink-0 animate-pulse" />
+        <Clock className="w-4 h-4 text-[#F5B942] shrink-0 animate-pulse" />
         <span>
-          Essa oferta acaba no dia <strong className="text-rose-400 font-extrabold">{info.dateLabel}</strong>
+          Essa oferta acaba no dia <strong className="text-[#F5B942] font-extrabold">{info.dateLabel}</strong>
         </span>
       </div>
       <div className="flex items-center gap-1.5 font-mono text-xs sm:text-sm font-black text-white">
-        <span className="bg-zinc-950 border border-zinc-800 px-2 py-0.5 rounded-md text-rose-400">{info.hours}h</span>
+        <span className="bg-zinc-950 border border-zinc-800 px-2 py-0.5 rounded-md text-[#F5B942]">{info.hours}h</span>
         <span className="text-zinc-500">:</span>
-        <span className="bg-zinc-950 border border-zinc-800 px-2 py-0.5 rounded-md text-rose-400">{info.minutes}m</span>
+        <span className="bg-zinc-950 border border-zinc-800 px-2 py-0.5 rounded-md text-[#F5B942]">{info.minutes}m</span>
         <span className="text-zinc-500">:</span>
-        <span className="bg-zinc-950 border border-zinc-800 px-2 py-0.5 rounded-md text-rose-400">{info.seconds}s</span>
+        <span className="bg-zinc-950 border border-zinc-800 px-2 py-0.5 rounded-md text-[#F5B942]">{info.seconds}s</span>
       </div>
     </div>
   );
@@ -255,10 +255,10 @@ export default function App() {
       </header>
 
       {/* HERO SECTION WITH VSL */}
-      <section id="vsl" className="relative pt-8 pb-16 px-4 md:px-8 max-w-6xl mx-auto">
+      <section id="vsl" className="relative pt-5 sm:pt-8 pb-8 sm:pb-10 px-2.5 sm:px-4 md:px-8 max-w-6xl mx-auto">
         
         {/* Live Online Count Badge above Image & Headline */}
-        <div className="flex items-center justify-center mb-5">
+        <div className="flex items-center justify-center mb-3.5 sm:mb-5">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-medium text-zinc-300 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
             <span><strong className="text-white font-mono"><LiveCountNumber /></strong> pessoas online agora</span>
@@ -266,8 +266,8 @@ export default function App() {
         </div>
 
         {/* GTA VI CD Showcase Image above Headline */}
-        <div className="flex justify-center mb-6">
-          <div className="relative w-64 sm:w-72 md:w-80 rounded-2xl overflow-hidden border border-pink-500/30 bg-zinc-950 shadow-2xl shadow-pink-500/15">
+        <div className="flex justify-center mb-4 sm:mb-6">
+          <div className="relative w-52 sm:w-72 md:w-80 rounded-2xl overflow-hidden border border-pink-500/30 bg-zinc-950 shadow-2xl shadow-pink-500/15">
             <img
               src={gta6CdEditionImg}
               alt="GTA VI Edição Física e Disco"
@@ -283,11 +283,11 @@ export default function App() {
         </div>
 
         {/* Headline */}
-        <div className="text-center max-w-4xl mx-auto mb-10">
-          <h1 className="font-['Sora',sans-serif] text-3xl sm:text-5xl lg:text-[3.35rem] font-extrabold tracking-[-0.03em] text-white mb-6 leading-[1.14] antialiased">
+        <div className="text-center w-full max-w-4xl mx-auto mb-5 sm:mb-10">
+          <h1 className="font-['Sora',sans-serif] text-[1.4rem] sm:text-5xl lg:text-[3.35rem] font-extrabold tracking-[-0.03em] text-white mb-2.5 sm:mb-6 leading-[1.15] sm:leading-[1.14] antialiased">
             Saia do <span className="text-rose-500 font-extrabold">CLT</span> faturando de <span className="text-amber-400">R$ 10.000 a R$ 30.000 ainda no primeiro mês</span> Programando Mapas para o GTA VI RP Usando Apenas IA
           </h1>
-          <p className="text-lg sm:text-xl text-zinc-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-xl text-zinc-300 w-full sm:max-w-3xl mx-auto leading-snug sm:leading-relaxed">
             Já perdeu todas as ondas, vai perder mais uma?
             <br />
             Assista o vídeo que preparei para você
@@ -442,7 +442,7 @@ export default function App() {
       </section>
 
       {/* SOCIAL PROOF BAR */}
-      <section className="border-y border-zinc-800 bg-[#0c0c0e] py-8 px-4">
+      <section className="border-y border-zinc-800 bg-[#0c0c0e] py-5 sm:py-6 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div>
             <div className="text-2xl sm:text-3xl font-extrabold text-white font-mono">+R$ 2.4 Milhões</div>
@@ -464,8 +464,8 @@ export default function App() {
       </section>
 
       {/* FAMOUS STREAMERS SECTION (GTA RP & GTA VI) */}
-      <section className="cv-auto py-20 px-4 md:px-8 max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+      <section className="cv-auto py-8 sm:py-12 px-4 md:px-8 max-w-6xl mx-auto">
+        <div className="text-center mb-7 sm:mb-10">
 
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
             Os Maiores Streamers de GTA RP Já se Preparam para o GTA VI
@@ -551,7 +551,7 @@ export default function App() {
       </section>
 
       {/* WHY GTA VI RP + AI IS THE BIGGEST GOLDMINE */}
-      <section className="py-20 px-4 md:px-8 max-w-6xl mx-auto">
+      <section className="py-8 sm:py-12 px-4 md:px-8 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3 leading-tight">
@@ -632,8 +632,8 @@ export default function App() {
 
 
       {/* SOCIAL PROOF SECTION: Pessoas que já começaram antes de lançar o GTA VI */}
-      <section id="provas-sociais" className="cv-auto py-20 px-2 sm:px-4 max-w-7xl mx-auto overflow-hidden">
-        <div className="text-center mb-10 px-4">
+      <section id="provas-sociais" className="cv-auto py-8 sm:py-12 px-2 sm:px-4 max-w-7xl mx-auto overflow-hidden">
+        <div className="text-center mb-5 sm:mb-7 px-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-medium text-zinc-300 mb-4 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
             <span><strong className="text-white font-mono"><LiveCountNumber /></strong> pessoas online agora</span>
@@ -647,7 +647,7 @@ export default function App() {
         </div>
 
         {/* Automatic Continuous Slow Marquee Container (No manual buttons, advances smoothly on its own) */}
-        <div className="relative w-full overflow-hidden select-none py-2">
+        <div className="relative w-full overflow-hidden select-none py-2 touch-pan-y">
           {/* Subtle side fade gradients for smooth entering and exiting cards */}
           <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-r from-zinc-950 via-zinc-950/70 to-transparent z-10" />
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-l from-zinc-950 via-zinc-950/70 to-transparent z-10" />
@@ -687,8 +687,8 @@ export default function App() {
                 </div>
 
                 {/* Card 3: Gabriel Alcântara (Dev Freelancer de Mapas) */}
-                <div className="bg-[#111b21] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[560px] w-[330px] sm:w-[370px] flex-shrink-0">
-                  <div className="p-4 bg-[#0b141a] space-y-2.5 flex-1 flex flex-col justify-between text-[13px] leading-relaxed select-none overflow-y-auto">
+                <div className="bg-[#111b21] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col min-h-[520px] sm:h-[560px] w-[320px] sm:w-[370px] flex-shrink-0">
+                  <div className="p-3.5 sm:p-4 bg-[#0b141a] space-y-2 flex-1 flex flex-col justify-between text-[12.5px] sm:text-[13px] leading-relaxed select-none overflow-hidden">
                     <div className="space-y-2.5">
                       <div className="bg-[#202c33] text-slate-100 p-2.5 rounded-2xl rounded-tl-none max-w-[88%] shadow-sm">
                         <p>Irmão do céu, tu não vai acreditar kkkkk</p>
@@ -720,8 +720,8 @@ export default function App() {
                 </div>
 
                 {/* Card 4: Matheus Vinicius (Dono de Servidor - Pré-Vendas) */}
-                <div className="bg-[#111b21] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[560px] w-[330px] sm:w-[370px] flex-shrink-0">
-                  <div className="p-4 bg-[#0b141a] space-y-2.5 flex-1 flex flex-col justify-between text-[13px] leading-relaxed select-none overflow-y-auto">
+                <div className="bg-[#111b21] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col min-h-[520px] sm:h-[560px] w-[320px] sm:w-[370px] flex-shrink-0">
+                  <div className="p-3.5 sm:p-4 bg-[#0b141a] space-y-2 flex-1 flex flex-col justify-between text-[12.5px] sm:text-[13px] leading-relaxed select-none overflow-hidden">
                     <div className="space-y-2.5">
                       <div className="bg-[#202c33] text-slate-100 p-2.5 rounded-2xl rounded-tl-none max-w-[88%] shadow-sm">
                         <p>Fala mestre! Passando pra deixar meu feedback da consultoria e do pack.</p>
@@ -753,8 +753,8 @@ export default function App() {
                 </div>
 
                 {/* Card 5: Felipe Andrade (Saiu do CLT) */}
-                <div className="bg-[#111b21] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[560px] w-[330px] sm:w-[370px] flex-shrink-0">
-                  <div className="p-4 bg-[#0b141a] space-y-2.5 flex-1 flex flex-col justify-between text-[13px] leading-relaxed select-none overflow-y-auto">
+                <div className="bg-[#111b21] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col min-h-[520px] sm:h-[560px] w-[320px] sm:w-[370px] flex-shrink-0">
+                  <div className="p-3.5 sm:p-4 bg-[#0b141a] space-y-2 flex-1 flex flex-col justify-between text-[12.5px] sm:text-[13px] leading-relaxed select-none overflow-hidden">
                     <div className="space-y-2.5">
                       <div className="bg-[#202c33] text-slate-100 p-2.5 rounded-2xl rounded-tl-none max-w-[88%] shadow-sm">
                         <p>Mano, preciso te agradecer de coração.</p>
@@ -787,8 +787,8 @@ export default function App() {
                 </div>
 
                 {/* Card 6: Lucas Henrique (Mods e Carros com IA) */}
-                <div className="bg-[#111b21] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[560px] w-[330px] sm:w-[370px] flex-shrink-0">
-                  <div className="p-4 bg-[#0b141a] space-y-2.5 flex-1 flex flex-col justify-between text-[13px] leading-relaxed select-none overflow-y-auto">
+                <div className="bg-[#111b21] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col min-h-[520px] sm:h-[560px] w-[320px] sm:w-[370px] flex-shrink-0">
+                  <div className="p-3.5 sm:p-4 bg-[#0b141a] space-y-2 flex-1 flex flex-col justify-between text-[12.5px] sm:text-[13px] leading-relaxed select-none overflow-hidden">
                     <div className="space-y-2.5">
                       <div className="bg-[#202c33] text-slate-100 p-2.5 rounded-2xl rounded-tl-none max-w-[88%] shadow-sm">
                         <p>Olha esse teste com o gerador de texturas e física que você ensinou no módulo 3...</p>
@@ -825,8 +825,8 @@ export default function App() {
       </section>
 
       {/* GTA VI RP PROGRAMMING GALLERY */}
-      <section className="cv-auto py-16 px-4 md:px-8 max-w-6xl mx-auto">
-        <div className="text-center mb-10">
+      <section className="cv-auto py-8 sm:py-10 px-4 md:px-8 max-w-6xl mx-auto">
+        <div className="text-center mb-5 sm:mb-7">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
             Na Prática: Programação de <span className="text-amber-400">Mapas e Sistemas</span> no GTA VI RP
           </h2>
@@ -893,26 +893,26 @@ export default function App() {
       </section>
 
       {/* PRICING & BLACK FRIDAY OFFER SECTION (Main Checkout Button at Bottom) */}
-      <section id="pricing-section" className="cv-auto pt-8 pb-20 px-2 sm:px-4 md:px-8 max-w-5xl mx-auto">
-        <div className="mb-8 flex justify-center px-2 sm:px-0">
-          <p className="text-sm sm:text-base text-zinc-200 bg-zinc-900/90 border border-zinc-800 rounded-2xl px-4 sm:px-6 py-4 max-w-2xl text-center leading-relaxed shadow-lg">
+      <section id="pricing-section" className="cv-auto pt-6 sm:pt-8 pb-10 sm:pb-12 px-2 sm:px-4 md:px-8 max-w-5xl mx-auto">
+        <div className="mb-5 sm:mb-8 flex justify-center px-2 sm:px-0">
+          <p className="text-sm sm:text-base text-zinc-200 bg-zinc-900/90 border border-zinc-800 rounded-2xl px-4 sm:px-6 py-3 sm:py-4 max-w-2xl text-center leading-relaxed shadow-lg">
             Você não precisa nem ter o <strong className="text-white">GTA VI</strong> instalado nem ter um <strong className="text-white">PS5</strong>, <span className="text-amber-400 font-semibold">apenas o método certo para começar a fazer dinheiro.</span>
           </p>
         </div>
 
-        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-900 px-3 pt-12 pb-6 sm:p-12 shadow-2xl">
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-900 px-3 pt-11 pb-5 sm:p-10 shadow-2xl">
           
-          <div className="absolute top-0 right-0 bg-rose-500 text-white text-xs font-extrabold px-6 py-2 rounded-bl-2xl uppercase tracking-widest shadow-md">
+          <div className="absolute top-0 right-0 bg-[#F5B942] text-zinc-950 text-xs font-extrabold px-6 py-2 rounded-bl-2xl uppercase tracking-widest shadow-md">
             ⚡ <span className="underline">BLACK FRIDAY</span>: 80% OFF
           </div>
 
-          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 px-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-medium text-zinc-300 mb-4 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+          <div className="text-center max-w-2xl mx-auto mb-5 sm:mb-7 px-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-medium text-zinc-300 mb-3 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#F5B942] animate-pulse"></span>
               <span><strong className="text-white font-mono"><LiveCountNumber /></strong> pessoas online agora</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
-              Bora sair do <span className="text-rose-500 font-extrabold">CLT</span> aproveitando esse mega <span className="text-rose-500 font-extrabold underline">desconto</span> da <span className="text-rose-500">Black Friday</span>.
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight mb-2.5 sm:mb-3">
+              Bora sair do <span className="text-[#F5B942] font-extrabold">CLT</span> aproveitando esse mega <span className="text-[#F5B942] font-extrabold underline">desconto</span> da <span className="text-[#F5B942]">Black Friday</span>.
             </h2>
             <p className="text-zinc-300 text-sm sm:text-base font-semibold">
               Essa é uma oportunidade única da sua vida e nunca mais vai aparecer, então aproveite.
@@ -920,10 +920,10 @@ export default function App() {
           </div>
 
           {/* Pricing Box */}
-          <div className="bg-zinc-950 border border-zinc-800 rounded-xl sm:rounded-2xl px-3.5 py-5 sm:p-8 w-full max-w-2xl mx-auto mb-8 text-center">
+          <div className="bg-zinc-950 border border-zinc-800 rounded-xl sm:rounded-2xl px-3.5 py-4 sm:p-7 w-full max-w-2xl mx-auto mb-5 sm:mb-6 text-center">
             
             {/* Foto do produto em cima da oferta (no lugar do preço) */}
-            <div className="mb-6 flex justify-center">
+            <div className="mb-4 flex justify-center">
               <img
                 src="/assets/aistudio/mestres_gta_vi_rp_2mb_fc6cc9fd.jpg"
                 alt="Mestres GTA VI RP"
@@ -931,80 +931,80 @@ export default function App() {
                 height={1312}
                 loading="lazy"
                 decoding="async"
-                className="w-full max-w-md h-auto rounded-xl sm:rounded-2xl border border-zinc-800 shadow-2xl shadow-rose-500/10"
+                className="w-full max-w-md h-auto rounded-xl sm:rounded-2xl border border-zinc-800 shadow-2xl shadow-[#F5B942]/15"
               />
             </div>
 
-            <div className="space-y-3 text-left mb-8 border-t border-zinc-800 pt-6">
+            <div className="space-y-2 sm:space-y-2.5 text-left mb-5 border-t border-zinc-800 pt-4">
               {/* Itens inclusos (escrita em branco, check verde) */}
-              <div className="flex items-center gap-3 text-sm text-white">
+              <div className="flex items-center gap-2.5 sm:gap-3 text-sm text-white">
                 <Check className="w-5 h-5 text-green-500 shrink-0" />
                 <span>Acesso Vitalício a Todos os Módulos Práticos do Zero ao Avançado</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-white">
+              <div className="flex items-center gap-2.5 sm:gap-3 text-sm text-white">
                 <Check className="w-5 h-5 text-green-500 shrink-0" />
                 <span>Pack com +100.000 Prompts Prontos para IA Gerar Mapas e Códigos</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-white">
+              <div className="flex items-center gap-2.5 sm:gap-3 text-sm text-white">
                 <Check className="w-5 h-5 text-green-500 shrink-0" />
                 <span>Comunidade VIP no Discord com Donos de Servidores</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-white">
+              <div className="flex items-center gap-2.5 sm:gap-3 text-sm text-white">
                 <Check className="w-5 h-5 text-green-500 shrink-0" />
                 <span>Aprenda todos os métodos que podem te fazer ganhar dinheiro com GTA VI</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-white">
+              <div className="flex items-center gap-2.5 sm:gap-3 text-sm text-white">
                 <Check className="w-5 h-5 text-green-500 shrink-0" />
                 <span>Aprenda onde divulgar seu mapa e como</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-white">
+              <div className="flex items-center gap-2.5 sm:gap-3 text-sm text-white">
                 <Check className="w-5 h-5 text-green-500 shrink-0" />
                 <span>Aprenda como precificar seu trabalho</span>
               </div>
 
-              {/* Bônus exclusivos (presente colorido, escrita em branco) */}
-              <div className="pt-2 space-y-3 border-t border-zinc-800/70">
-                <div className="flex items-center gap-3 text-sm">
-                  <Gift className="w-5 h-5 text-rose-400 shrink-0" />
+              {/* Bônus exclusivos (presente dourado, escrita em branco) */}
+              <div className="pt-2 space-y-2 sm:space-y-2.5 border-t border-zinc-800/70">
+                <div className="flex items-center gap-2.5 sm:gap-3 text-sm">
+                  <Gift className="w-5 h-5 text-[#F5B942] shrink-0" />
                   <span className="font-bold text-white">10.000 vídeos prontos sobre GTA VI para postar nas redes sociais e monetizar</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <Gift className="w-5 h-5 text-rose-400 shrink-0" />
+                <div className="flex items-center gap-2.5 sm:gap-3 text-sm">
+                  <Gift className="w-5 h-5 text-[#F5B942] shrink-0" />
                   <span className="font-bold text-white">50 IAs grátis para usar</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <Gift className="w-5 h-5 text-rose-400 shrink-0" />
+                <div className="flex items-center gap-2.5 sm:gap-3 text-sm">
+                  <Gift className="w-5 h-5 text-[#F5B942] shrink-0" />
                   <span className="font-bold text-white">Ferramentas secretas de mapeamento 3D</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <Gift className="w-5 h-5 text-rose-400 shrink-0" />
+                <div className="flex items-center gap-2.5 sm:gap-3 text-sm">
+                  <Gift className="w-5 h-5 text-[#F5B942] shrink-0" />
                   <span className="font-bold text-white">Suporte direto com especialistas</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <Gift className="w-5 h-5 text-rose-400 shrink-0" />
+                <div className="flex items-center gap-2.5 sm:gap-3 text-sm">
+                  <Gift className="w-5 h-5 text-[#F5B942] shrink-0" />
                   <span className="font-bold text-white">Chamada de vídeo direta com especialistas</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <Gift className="w-5 h-5 text-rose-400 shrink-0" />
+                <div className="flex items-center gap-2.5 sm:gap-3 text-sm">
+                  <Gift className="w-5 h-5 text-[#F5B942] shrink-0" />
                   <span className="font-bold text-white">Garantia incondicional de 30 dias</span>
                 </div>
               </div>
             </div>
 
             {/* Valores e Parcelamento (embaixo da oferta e dos bônus) */}
-            <div className="border-t border-zinc-800 pt-6 mb-8">
+            <div className="border-t border-zinc-800 pt-4 mb-4">
               {/* Preço Riscado (Âncora de R$ 235) */}
-              <div className="flex items-center justify-center gap-2 mb-2 text-zinc-400 text-sm">
+              <div className="flex items-center justify-center gap-2 mb-1 text-zinc-400 text-sm">
                 <span>De</span>
                 <span className="text-zinc-500 text-lg sm:text-xl font-bold line-through">R$ 235</span>
                 <span>por apenas</span>
               </div>
 
               {/* Installment Price LARGER as primary, Cash Price smaller underneath (R$ 47) */}
-              <div className="text-zinc-400 text-xs font-semibold uppercase tracking-wider mb-2">Parcelado no Cartão em até 4x</div>
-              <div className="text-4xl sm:text-6xl lg:text-7xl font-black text-rose-500 tracking-tight drop-shadow-[0_0_35px_rgba(244,63,94,0.35)] mb-2 flex items-baseline justify-center gap-2">
+              <div className="text-zinc-400 text-xs font-semibold uppercase tracking-wider mb-1">Parcelado no Cartão em até 4x</div>
+              <div className="text-4xl sm:text-6xl lg:text-7xl font-black text-[#F5B942] tracking-tight drop-shadow-[0_0_35px_rgba(245,185,66,0.35)] mb-1.5 flex items-baseline justify-center gap-2">
                 <span className="text-2xl sm:text-3xl font-extrabold text-zinc-300">4x de</span>
-                <span className="bg-gradient-to-r from-rose-400 via-rose-500 to-red-500 bg-clip-text text-transparent">R$ 11</span>
+                <span className="bg-gradient-to-r from-[#fde08d] via-[#F5B942] to-[#d9971e] bg-clip-text text-transparent">R$ 11</span>
               </div>
               <div className="text-zinc-400 text-sm flex items-center justify-center gap-1.5 font-medium">
                 <span>ou</span>
@@ -1013,7 +1013,7 @@ export default function App() {
               </div>
             </div>
 
-            <p className="text-center text-sm sm:text-base text-zinc-300 font-medium mb-6">
+            <p className="text-center text-sm sm:text-base text-zinc-300 font-medium mb-4">
               Essa pode ser sua <span className="text-white font-bold">renda extra</span> ou até sua <span className="text-amber-400 font-bold">renda principal!</span>
             </p>
 
@@ -1035,7 +1035,7 @@ export default function App() {
 
           {/* Guarantee Badge */}
           <div className="flex items-center justify-center gap-4 text-center max-w-lg mx-auto">
-            <div className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-rose-500 shrink-0">
+            <div className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-[#F5B942] shrink-0">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div className="text-left">
@@ -1047,8 +1047,8 @@ export default function App() {
       </section>
 
       {/* FAQ SECTION */}
-      <section id="faq" className="cv-auto py-20 px-4 md:px-8 max-w-3xl mx-auto">
-        <div className="text-center mb-16">
+      <section id="faq" className="cv-auto py-8 sm:py-12 px-4 md:px-8 max-w-3xl mx-auto">
+        <div className="text-center mb-7 sm:mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold mb-4">
             <HelpCircle className="w-3.5 h-3.5 text-rose-500" />
             <span>Dúvidas Frequentes</span>
@@ -1102,7 +1102,7 @@ export default function App() {
       </section>
 
       {/* FOOTER */}
-      <footer className="cv-auto border-t border-zinc-800 bg-zinc-950 py-12 px-4 text-center text-xs text-zinc-500">
+      <footer className="cv-auto border-t border-zinc-800 bg-zinc-950 py-8 sm:py-10 px-4 text-center text-xs text-zinc-500">
         <div className="max-w-6xl mx-auto space-y-4">
           <div className="flex items-center justify-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center font-extrabold text-white text-xs">
@@ -1136,12 +1136,12 @@ export default function App() {
             {checkoutStep === 'form' ? (
               <div>
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-950 border border-rose-500/30 text-rose-500 text-xs font-semibold mb-2">
-                    <Lock className="w-3 h-3" /> Checkout <span className="text-rose-500 font-bold">Black Friday</span> Seguro
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-950 border border-[#F5B942]/30 text-[#F5B942] text-xs font-semibold mb-2">
+                    <Lock className="w-3 h-3" /> Checkout <span className="text-[#F5B942] font-bold">Black Friday</span> Seguro
                   </div>
                   <h3 className="text-xl font-bold text-white mt-1">Finalizar Inscrição</h3>
                   <p className="text-xs text-zinc-400 mt-1">
-                    De <span className="line-through text-zinc-500 font-semibold">R$ 235</span> por <strong className="text-white">4x de R$ 11</strong> ou <strong className="text-rose-400">R$ 47 à vista</strong> (80% OFF — Economia de R$ 188)
+                    De <span className="line-through text-zinc-500 font-semibold">R$ 235</span> por <strong className="text-white">4x de R$ 11</strong> ou <strong className="text-[#F5B942]">R$ 47 à vista</strong> (80% OFF — Economia de R$ 188)
                   </p>
                 </div>
 
@@ -1154,7 +1154,7 @@ export default function App() {
                       placeholder="Seu nome"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-rose-500"
+                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#F5B942]"
                     />
                   </div>
                   <div>
@@ -1165,7 +1165,7 @@ export default function App() {
                       placeholder="seu@email.com"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-rose-500"
+                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#F5B942]"
                     />
                   </div>
                   <div>
@@ -1175,7 +1175,7 @@ export default function App() {
                       placeholder="(11) 99999-9999"
                       value={formData.whatsapp}
                       onChange={(e) => setFormData({...formData, whatsapp: e.target.value})}
-                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-rose-500"
+                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#F5B942]"
                     />
                   </div>
 
@@ -1185,9 +1185,9 @@ export default function App() {
                       <button 
                         type="button"
                         onClick={() => {}}
-                        className={`p-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-2 transition-all border-rose-500 bg-rose-500/10 text-white`}
+                        className={`p-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-2 transition-all border-[#F5B942] bg-[#F5B942]/10 text-white`}
                       >
-                        <Zap className="w-4 h-4 text-rose-500" /> PIX (Aprovação Imediata)
+                        <Zap className="w-4 h-4 text-[#F5B942]" /> PIX (Aprovação Imediata)
                       </button>
                       <button 
                         type="button"
