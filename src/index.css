@@ -23,10 +23,24 @@
 
 @keyframes checkout-glow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.6), 0 0 48px rgba(74, 222, 128, 0.35);
+    transform: translate3d(0, 0, 0) scale(1);
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.55), 0 0 42px rgba(74, 222, 128, 0.35);
   }
-  50% {
-    box-shadow: 0 0 34px rgba(34, 197, 94, 0.95), 0 0 76px rgba(74, 222, 128, 0.65), 0 0 115px rgba(34, 197, 94, 0.35);
+  20% {
+    transform: translate3d(0, 0, 0) scale(1.045);
+    box-shadow: 0 0 32px rgba(34, 197, 94, 0.95), 0 0 72px rgba(74, 222, 128, 0.65), 0 0 105px rgba(34, 197, 94, 0.35);
+  }
+  35% {
+    transform: translate3d(0, 0, 0) scale(1);
+    box-shadow: 0 0 22px rgba(34, 197, 94, 0.65), 0 0 48px rgba(74, 222, 128, 0.4);
+  }
+  52% {
+    transform: translate3d(0, 0, 0) scale(1.03);
+    box-shadow: 0 0 28px rgba(34, 197, 94, 0.9), 0 0 64px rgba(74, 222, 128, 0.58);
+  }
+  70% {
+    transform: translate3d(0, 0, 0) scale(1);
+    box-shadow: 0 0 18px rgba(34, 197, 94, 0.55), 0 0 42px rgba(74, 222, 128, 0.35);
   }
 }
 
@@ -42,7 +56,8 @@
 .btn-checkout-glow {
   position: relative;
   overflow: hidden;
-  animation: checkout-glow 2s ease-in-out infinite;
+  will-change: transform, box-shadow;
+  animation: checkout-glow 1.65s ease-in-out infinite;
 }
 
 .btn-checkout-glow::after {

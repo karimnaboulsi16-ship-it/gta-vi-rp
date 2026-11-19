@@ -285,7 +285,7 @@ export default function App() {
         {/* Headline */}
         <div className="text-center w-full max-w-4xl mx-auto mb-5 sm:mb-10">
           <h1 className="font-['Sora',sans-serif] text-[1.4rem] sm:text-5xl lg:text-[3.35rem] font-extrabold tracking-[-0.03em] text-white mb-2.5 sm:mb-6 leading-[1.15] sm:leading-[1.14] antialiased">
-            Saia do <span className="text-rose-500 font-extrabold">CLT</span> faturando de <span className="text-amber-400">R$ 10.000 a R$ 30.000 ainda no primeiro mês</span> Programando Mapas para o GTA VI RP Usando Apenas IA
+            Saia da <span className="text-rose-500 font-extrabold">CLT</span> faturando de <span className="text-amber-400">R$ 10.000 a R$ 30.000 ainda no primeiro mês</span> Programando Mapas para o GTA VI RP Usando Apenas IA
           </h1>
           <p className="text-xs sm:text-xl text-zinc-300 w-full sm:max-w-3xl mx-auto leading-snug sm:leading-relaxed">
             Já perdeu todas as ondas, vai perder mais uma?
@@ -424,16 +424,16 @@ export default function App() {
             "Enquanto todo mundo joga, você faz dinheiro. Aproveite."
           </p>
 
-          <div className="mt-6 max-w-xl mx-auto">
+          <div className="mt-5 flex justify-center">
             <a
               href="#pricing-section"
               onClick={(e) => {
                 e.preventDefault();
                 document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
-              className="btn-checkout-glow w-full py-6 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-black text-xl rounded-2xl border border-green-300/60 transition-all transform hover:scale-105 flex items-center justify-center gap-3 text-center"
+              className="btn-checkout-glow w-full max-w-[300px] sm:max-w-md py-3.5 sm:py-4 px-4 sm:px-7 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-black text-sm sm:text-lg rounded-xl sm:rounded-2xl border border-green-300/60 transition-colors flex items-center justify-center gap-2 text-center"
             >
-              <Zap className="w-6 h-6 fill-white relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
+              <Zap className="w-4 h-4 sm:w-5 sm:h-5 fill-white relative z-10 shrink-0 drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
               <span className="relative z-10 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]">QUERO GANHAR DINHEIRO COM GTA VI</span>
             </a>
           </div>
@@ -908,11 +908,11 @@ export default function App() {
 
           <div className="text-center max-w-2xl mx-auto mb-5 sm:mb-7 px-1">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-medium text-zinc-300 mb-3 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-[#F5B942] animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
               <span><strong className="text-white font-mono"><LiveCountNumber /></strong> pessoas online agora</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight mb-2.5 sm:mb-3">
-              Bora sair do <span className="text-[#F5B942] font-extrabold">CLT</span> aproveitando esse mega <span className="text-[#F5B942] font-extrabold underline">desconto</span> da <span className="text-[#F5B942]">Black Friday</span>.
+              Bora sair da <span className="text-rose-500 font-extrabold">CLT</span> aproveitando esse mega <span className="text-[#F5B942] font-extrabold underline">desconto</span> da <span className="text-[#F5B942]">Black Friday</span>.
             </h2>
             <p className="text-zinc-300 text-sm sm:text-base font-semibold">
               Essa é uma oportunidade única da sua vida e nunca mais vai aparecer, então aproveite.
@@ -1017,17 +1017,19 @@ export default function App() {
               Essa pode ser sua <span className="text-white font-bold">renda extra</span> ou até sua <span className="text-amber-400 font-bold">renda principal!</span>
             </p>
 
-            {/* MAIN CHECKOUT BUTTON AT BOTTOM (Glowing + Light Sweep) */}
-            <a 
-              href="https://pay.wiapy.com/F6rGZIyQZ1UL"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={handleCheckoutClick}
-              className="btn-checkout-glow w-full py-5 sm:py-6 px-3 sm:px-6 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-black text-base sm:text-xl rounded-xl sm:rounded-2xl border border-green-300/60 transition-all transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 text-center"
-            >
-              <Zap className="w-5 h-5 sm:w-6 sm:h-6 fill-white relative z-10 shrink-0 drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
-              <span className="relative z-10 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]">QUERO GANHAR DINHEIRO COM GTA VI</span>
-            </a>
+            {/* MAIN CHECKOUT BUTTON AT BOTTOM (Compact + Pumping + Glowing + Light Sweep) */}
+            <div className="flex justify-center">
+              <a 
+                href="https://pay.wiapy.com/F6rGZIyQZ1UL"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={handleCheckoutClick}
+                className="btn-checkout-glow w-full max-w-[300px] sm:max-w-md py-3.5 sm:py-4 px-4 sm:px-7 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-black text-sm sm:text-lg rounded-xl sm:rounded-2xl border border-green-300/60 transition-colors flex items-center justify-center gap-2 text-center"
+              >
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 fill-white relative z-10 shrink-0 drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
+                <span className="relative z-10 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]">QUERO GANHAR DINHEIRO COM GTA VI</span>
+              </a>
+            </div>
 
             {/* Countdown Timer directly below checkout button */}
             <OfferExpiryTimer />
@@ -1199,13 +1201,13 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="pt-4">
+                  <div className="pt-4 flex justify-center">
                     <a 
                       href="https://pay.wiapy.com/F6rGZIyQZ1UL"
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={handleCheckoutClick}
-                      className="btn-checkout-glow block text-center w-full py-4 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-extrabold rounded-xl border border-green-300/60 transition-all text-sm"
+                      className="btn-checkout-glow block text-center w-full max-w-[290px] py-3.5 px-4 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-extrabold rounded-xl border border-green-300/60 transition-colors text-xs sm:text-sm"
                     >
                       <span className="relative z-10">GARANTIR PREÇO DE BLACK FRIDAY (R$ 47)</span>
                     </a>
