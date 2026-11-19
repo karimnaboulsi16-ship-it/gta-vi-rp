@@ -131,19 +131,19 @@ const OfferExpiryTimer = React.memo(function OfferExpiryTimer() {
   }, []);
 
   return (
-    <div className="mt-4 rounded-xl bg-zinc-900/90 border border-[#F5B942]/35 px-4 py-3 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center shadow-lg">
+    <div className="mt-4 rounded-xl bg-zinc-900/90 border border-rose-500/40 px-4 py-3 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center shadow-lg">
       <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-zinc-200">
-        <Clock className="w-4 h-4 text-[#F5B942] shrink-0 animate-pulse" />
+        <Clock className="w-4 h-4 text-rose-500 shrink-0 animate-pulse" />
         <span>
-          Essa oferta acaba no dia <strong className="text-[#F5B942] font-extrabold">{info.dateLabel}</strong>
+          Essa oferta acaba no dia <strong className="text-rose-500 font-extrabold">{info.dateLabel}</strong>
         </span>
       </div>
-      <div className="flex items-center gap-1.5 font-mono text-xs sm:text-sm font-black text-white">
-        <span className="bg-zinc-950 border border-zinc-800 px-2 py-0.5 rounded-md text-[#F5B942]">{info.hours}h</span>
-        <span className="text-zinc-500">:</span>
-        <span className="bg-zinc-950 border border-zinc-800 px-2 py-0.5 rounded-md text-[#F5B942]">{info.minutes}m</span>
-        <span className="text-zinc-500">:</span>
-        <span className="bg-zinc-950 border border-zinc-800 px-2 py-0.5 rounded-md text-[#F5B942]">{info.seconds}s</span>
+      <div className="flex items-center gap-1.5 font-mono text-xs sm:text-sm font-black text-rose-500">
+        <span className="bg-zinc-950 border border-rose-500/30 px-2 py-0.5 rounded-md text-rose-500">{info.hours}h</span>
+        <span className="text-rose-500/70">:</span>
+        <span className="bg-zinc-950 border border-rose-500/30 px-2 py-0.5 rounded-md text-rose-500">{info.minutes}m</span>
+        <span className="text-rose-500/70">:</span>
+        <span className="bg-zinc-950 border border-rose-500/30 px-2 py-0.5 rounded-md text-rose-500">{info.seconds}s</span>
       </div>
     </div>
   );
@@ -237,8 +237,47 @@ export default function App() {
     );
   };
 
+  const handleScrollToCheckout = (e?: React.MouseEvent<HTMLElement>) => {
+    e?.preventDefault();
+    const pricingEl = document.getElementById('pricing-section');
+    if (!pricingEl) return;
+
+    const getTargetTop = () => {
+      const header = document.querySelector('header');
+      const headerOffset = header ? header.getBoundingClientRect().height + 12 : 76;
+      return Math.max(0, pricingEl.getBoundingClientRect().top + window.scrollY - headerOffset);
+    };
+
+    window.scrollTo({ top: getTargetTop(), behavior: 'smooth' });
+
+    let cancelled = false;
+    const cancelCorrection = () => {
+      cancelled = true;
+    };
+    window.addEventListener('touchstart', cancelCorrection, { once: true, passive: true });
+    window.addEventListener('wheel', cancelCorrection, { once: true, passive: true });
+
+    const verifyAlignment = (delay: number, isFinal = false) => {
+      window.setTimeout(() => {
+        if (!cancelled) {
+          const desiredTop = getTargetTop();
+          if (Math.abs(window.scrollY - desiredTop) > 24) {
+            window.scrollTo({ top: desiredTop, behavior: 'smooth' });
+          }
+        }
+        if (isFinal) {
+          window.removeEventListener('touchstart', cancelCorrection);
+          window.removeEventListener('wheel', cancelCorrection);
+        }
+      }, delay);
+    };
+
+    verifyAlignment(550);
+    verifyAlignment(950, true);
+  };
+
   return (
-    <div className="min-h-screen bg-[#09090b] text-slate-100 selection:bg-rose-500 selection:text-white overflow-x-hidden relative pb-16">
+    <div className="min-h-screen bg-[#09090b] text-slate-100 selection:bg-rose-500 selection:text-white overflow-x-clip relative pb-16">
       
 
       {/* TOP BAR CONTRACT */}
@@ -427,10 +466,7 @@ export default function App() {
           <div className="mt-5 flex justify-center">
             <a
               href="#pricing-section"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
+              onClick={handleScrollToCheckout}
               className="btn-checkout-glow w-full max-w-[300px] sm:max-w-md py-3.5 sm:py-4 px-4 sm:px-7 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-black text-sm sm:text-lg rounded-xl sm:rounded-2xl border border-green-300/60 transition-colors flex items-center justify-center gap-2 text-center"
             >
               <Zap className="w-4 h-4 sm:w-5 sm:h-5 fill-white relative z-10 shrink-0 drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
@@ -464,7 +500,7 @@ export default function App() {
       </section>
 
       {/* FAMOUS STREAMERS SECTION (GTA RP & GTA VI) */}
-      <section className="cv-auto py-8 sm:py-12 px-4 md:px-8 max-w-6xl mx-auto">
+      <section className="py-8 sm:py-12 px-4 md:px-8 max-w-6xl mx-auto">
         <div className="text-center mb-7 sm:mb-10">
 
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
@@ -632,7 +668,7 @@ export default function App() {
 
 
       {/* SOCIAL PROOF SECTION: Pessoas que já começaram antes de lançar o GTA VI */}
-      <section id="provas-sociais" className="cv-auto py-8 sm:py-12 px-2 sm:px-4 max-w-7xl mx-auto overflow-hidden">
+      <section id="provas-sociais" className="py-8 sm:py-12 px-2 sm:px-4 max-w-7xl mx-auto overflow-hidden">
         <div className="text-center mb-5 sm:mb-7 px-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] sm:text-xs font-medium text-zinc-300 mb-4 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
@@ -825,7 +861,7 @@ export default function App() {
       </section>
 
       {/* GTA VI RP PROGRAMMING GALLERY */}
-      <section className="cv-auto py-8 sm:py-10 px-4 md:px-8 max-w-6xl mx-auto">
+      <section className="py-8 sm:py-10 px-4 md:px-8 max-w-6xl mx-auto">
         <div className="text-center mb-5 sm:mb-7">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
             Na Prática: Programação de <span className="text-amber-400">Mapas e Sistemas</span> no GTA VI RP
@@ -893,7 +929,7 @@ export default function App() {
       </section>
 
       {/* PRICING & BLACK FRIDAY OFFER SECTION (Main Checkout Button at Bottom) */}
-      <section id="pricing-section" className="cv-auto pt-6 sm:pt-8 pb-10 sm:pb-12 px-2 sm:px-4 md:px-8 max-w-5xl mx-auto">
+      <section id="pricing-section" className="scroll-mt-20 pt-6 sm:pt-8 pb-10 sm:pb-12 px-2 sm:px-4 md:px-8 max-w-5xl mx-auto">
         <div className="mb-5 sm:mb-8 flex justify-center px-2 sm:px-0">
           <p className="text-sm sm:text-base text-zinc-200 bg-zinc-900/90 border border-zinc-800 rounded-2xl px-4 sm:px-6 py-3 sm:py-4 max-w-2xl text-center leading-relaxed shadow-lg">
             Você não precisa nem ter o <strong className="text-white">GTA VI</strong> instalado nem ter um <strong className="text-white">PS5</strong>, <span className="text-amber-400 font-semibold">apenas o método certo para começar a fazer dinheiro.</span>

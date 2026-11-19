@@ -16,9 +16,12 @@
   animation: marquee-slow 65s linear infinite;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .cv-auto {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 600px;
+  contain: layout style;
 }
 
 @keyframes checkout-glow {
