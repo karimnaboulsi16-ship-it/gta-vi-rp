@@ -6,6 +6,13 @@ declare global {
     __metaPixelInitialized?: boolean;
     __metaPageViewEventId?: string;
     __metaPageViewCapiSent?: boolean;
+    LowTrack?: {
+      getClickId?: () => string;
+      getUtms?: () => Record<string, string>;
+      getFbp?: () => string;
+      getFbc?: () => string;
+      trackIC?: () => void;
+    };
   }
 }
 
@@ -21,10 +28,22 @@ function getCookie(name: string): string | undefined {
   return match ? decodeURIComponent(match[1]) : undefined;
 }
 
+function getFbpValue(): string | undefined {
+  const cookieFbp = getCookie('_fbp');
+  if (cookieFbp) return cookieFbp;
+  if (typeof window !== 'undefined') {
+    const ltFbp = window.LowTrack?.getFbp?.();
+    if (ltFbp) return ltFbp;
+  }
+  return undefined;
+}
+
 function getFbcCookie(): string | undefined {
   const existing = getCookie('_fbc');
   if (existing) return existing;
   if (typeof window === 'undefined') return undefined;
+  const ltFbc = window.LowTrack?.getFbc?.();
+  if (ltFbc) return ltFbc;
   const params = new URLSearchParams(window.location.search);
   const fbclid = params.get('fbclid');
   if (!fbclid) return undefined;
@@ -76,13 +95,21 @@ export function syncInitialPageViewCapi() {
 
   const eventId = window.__metaPageViewEventId || createEventId('pv');
 
-  sendCapiEvent({
-    eventName: 'PageView',
-    eventId,
-    eventSourceUrl: window.location.href,
-    fbp: getCookie('_fbp'),
-    fbc: getFbcCookie(),
-  });
+  const dispatch = () => {
+    sendCapiEvent({
+      eventName: 'PageView',
+      eventId,
+      eventSourceUrl: window.location.href,
+      fbp: getFbpValue(),
+      fbc: getFbcCookie(),
+    });
+  };
+
+  if (getFbpValue()) {
+    dispatch();
+  } else {
+    window.setTimeout(dispatch, 350);
+  }
 }
 
 /**
@@ -118,7 +145,7 @@ export function trackMetaEvent(
     eventName,
     eventId,
     eventSourceUrl: window.location.href,
-    fbp: getCookie('_fbp'),
+    fbp: getFbpValue(),
     fbc: getFbcCookie(),
     customData,
   });
