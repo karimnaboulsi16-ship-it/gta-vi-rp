@@ -124,6 +124,93 @@ async function startServer() {
     }
   });
 
+  // Stream MP4 video files in <= 2MB range chunks so browsers & reverse proxies never drop large files
+  const handleVideoRequest = (req: Request, res: Response, next: express.NextFunction) => {
+    const fileName = path.basename(req.path);
+    if (!fileName.toLowerCase().endsWith('.mp4')) {
+      return next();
+    }
+
+    const candidates = [
+      path.join(__dirname, 'public', 'assets', 'aistudio', fileName),
+      path.join(__dirname, 'dist', 'assets', 'aistudio', fileName),
+    ];
+    const filePath = candidates.find((p) => fs.existsSync(p));
+    if (!filePath) {
+      return next();
+    }
+
+    const stat = fs.statSync(filePath);
+    const fileSize = stat.size;
+    const range = req.headers.range;
+    const MAX_CHUNK_BYTES = 2 * 1024 * 1024; // 2 MB per chunk
+
+    res.setHeader('Content-Type', 'video/mp4');
+    res.setHeader('Accept-Ranges', 'bytes');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+
+    if (range) {
+      const match = /^bytes=(\d+)-(\d*)$/.exec(range.trim());
+      if (!match) {
+        res.status(416).setHeader('Content-Range', `bytes */${fileSize}`).end();
+        return;
+      }
+
+      const start = Number(match[1]);
+      if (Number.isNaN(start) || start >= fileSize) {
+        res.status(416).setHeader('Content-Range', `bytes */${fileSize}`).end();
+        return;
+      }
+
+      const requestedEnd = match[2] ? Number(match[2]) : fileSize - 1;
+      const end = Math.min(
+        Number.isNaN(requestedEnd) ? fileSize - 1 : requestedEnd,
+        start + MAX_CHUNK_BYTES - 1,
+        fileSize - 1
+      );
+      const chunkSize = end - start + 1;
+
+      res.status(206);
+      res.setHeader('Content-Range', `bytes ${start}-${end}/${fileSize}`);
+      res.setHeader('Content-Length', String(chunkSize));
+
+      if (req.method === 'HEAD') {
+        res.end();
+        return;
+      }
+
+      const stream = fs.createReadStream(filePath, { start, end });
+      stream.on('error', () => {
+        if (!res.headersSent) res.status(500).end();
+        else res.destroy();
+      });
+      res.on('close', () => stream.destroy());
+      stream.pipe(res);
+      return;
+    }
+
+    if (req.method === 'HEAD') {
+      res.status(200).setHeader('Content-Length', String(fileSize)).end();
+      return;
+    }
+
+    // Stream without a huge single-buffer Content-Length when > 16MB
+    res.status(200);
+    if (fileSize <= 16 * 1024 * 1024) {
+      res.setHeader('Content-Length', String(fileSize));
+    }
+    const stream = fs.createReadStream(filePath);
+    stream.on('error', () => {
+      if (!res.headersSent) res.status(500).end();
+      else res.destroy();
+    });
+    res.on('close', () => stream.destroy());
+    stream.pipe(res);
+  };
+
+  app.get('/assets/aistudio/:file', handleVideoRequest);
+  app.head('/assets/aistudio/:file', handleVideoRequest);
+
   const distPath = path.resolve(__dirname, 'dist');
   const isProd =
     process.env.NODE_ENV === 'production' ||

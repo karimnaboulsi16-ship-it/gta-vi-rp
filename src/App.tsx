@@ -3,14 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Play, Pause, Volume2, VolumeX, Maximize, ShieldCheck, Zap,
+  Play, ShieldCheck, Zap,
   CheckCircle2, ChevronDown, ChevronUp, Lock, Sparkles, HelpCircle,
   Check, CreditCard, X, ShoppingBag, CheckCheck, Gift, Clock
 } from 'lucide-react';
 import courseModuleAiImg from './assets/optimized/course_module_ai.webp';
-import gta6HeroBannerImg from './assets/optimized/gta6_hero_banner.webp';
 import gta6CdEditionImg from './assets/optimized/gta6_cd_edition.webp';
 import streamerCerolImg from './assets/optimized/streamer_cerol.webp';
 import streamerPaulinhoImg from './assets/optimized/streamer_paulinho.webp';
@@ -152,10 +151,9 @@ const OfferExpiryTimer = React.memo(function OfferExpiryTimer() {
 export default function App() {
   // VSL State
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration] = useState(342); // 5:42 video duration
-  const [showTranscript, setShowTranscript] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   // FAQ State
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -165,25 +163,48 @@ export default function App() {
   const [checkoutStep, setCheckoutStep] = useState<'form' | 'success'>('form');
   const [formData, setFormData] = useState({ name: '', email: '', whatsapp: '', paymentMethod: 'pix' });
 
-  // Simulated VSL timer
-  useEffect(() => {
-    if (!isPlaying) return;
-    const interval = setInterval(() => {
-      setCurrentTime((prev) => {
-        if (prev >= duration) {
-          setIsPlaying(false);
-          return duration;
-        }
-        return prev + 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [isPlaying, duration]);
+  const safePlayVideo = async (resetToStart = false) => {
+    const video = videoRef.current;
+    if (!video) return;
 
-  const formatTime = (secs: number) => {
-    const mins = Math.floor(secs / 60);
-    const remainSecs = secs % 60;
-    return `${mins}:${remainSecs < 10 ? '0' : ''}${remainSecs}`;
+    const shouldReset = resetToStart || video.ended;
+
+    try {
+      if (video.error || video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+        video.load();
+      }
+      if (shouldReset) {
+        video.currentTime = 0;
+      }
+      video.muted = isMuted;
+      await video.play();
+      setHasStarted(true);
+      setIsPlaying(true);
+    } catch {
+      try {
+        video.muted = true;
+        setIsMuted(true);
+        if (shouldReset) {
+          video.currentTime = 0;
+        }
+        await video.play();
+        setHasStarted(true);
+        setIsPlaying(true);
+      } catch {
+        setIsPlaying(false);
+      }
+    }
+  };
+
+  const toggleVideoPlayback = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (isPlaying && !video.paused) {
+      video.pause();
+      setIsPlaying(false);
+    } else {
+      void safePlayVideo(false);
+    }
   };
 
   const handleCheckoutSubmit = (e: React.FormEvent) => {
@@ -333,111 +354,57 @@ export default function App() {
           </p>
         </div>
 
-        {/* VSL VIDEO PLAYER CONTAINER */}
-        <div className="relative max-w-4xl mx-auto rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950 shadow-2xl">
-          
-          {/* Live Viewer badge in RED */}
-          <div className="absolute top-4 left-4 z-20 flex items-center gap-2 px-3 py-1 bg-black/80 backdrop-blur-md rounded-full border border-rose-500/40 text-xs font-medium text-rose-500">
-            <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-            <span className="text-rose-500 font-bold">🔴 <LiveCountNumber formatted={false} /> pessoas assistindo agora</span>
-          </div>
+        {/* VSL VIDEO PLAYER CONTAINER (9:16 Vertical) */}
+        <div className="relative max-w-[310px] sm:max-w-xs mx-auto aspect-[9/16] rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950 shadow-2xl">
+          {/* HTML5 Video Element (9:16 Vertical) */}
+          <div className="relative w-full h-full bg-zinc-900 group cursor-pointer overflow-hidden">
+            <video
+              ref={videoRef}
+              playsInline
+              preload="metadata"
+              muted={isMuted}
+              className="w-full h-full object-cover"
+              onPlay={() => {
+                setHasStarted(true);
+                setIsPlaying(true);
+              }}
+              onPause={() => setIsPlaying(false)}
+              onEnded={() => {
+                setIsPlaying(false);
+                setHasStarted(false);
+              }}
+              onClick={toggleVideoPlayback}
+            >
+              <source src="/assets/aistudio/VSL_Google_AI_Studio_4e8d5b9a.mp4" type="video/mp4" />
+            </video>
 
-          <div className="absolute top-4 right-4 z-20 flex items-center gap-2 px-3 py-1 bg-rose-500 text-white font-bold backdrop-blur-md rounded-full text-xs uppercase tracking-wider shadow-md">
-            🔥 Black Friday Ativa
-          </div>
-
-          {/* Video Screen / Poster */}
-          <div className="relative aspect-video w-full bg-zinc-900 group cursor-pointer overflow-hidden" onClick={() => setIsPlaying(!isPlaying)}>
-            <img 
-              src={gta6HeroBannerImg} 
-              alt="GTA VI RP Map Maker Preview" 
-              width={1024}
-              height={572}
-              loading="eager"
-              decoding="async"
-              fetchPriority="high"
-              className={`w-full h-full object-cover transition-transform duration-700 ${isPlaying ? 'scale-105 opacity-90' : 'group-hover:scale-105'}`}
-            />
-            
-            {/* Scrim Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 flex flex-col items-center justify-center">
-              {!isPlaying && (
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-rose-500 hover:bg-rose-400 text-white flex items-center justify-center shadow-2xl transform transition-transform group-hover:scale-110 animate-pulse">
-                  <Play className="w-8 h-8 sm:w-10 sm:h-10 fill-white ml-1" />
-                </div>
-              )}
-
-              {!isPlaying && (
-                <div className="mt-4 text-center px-4">
-                  <p className="text-white font-bold text-lg sm:text-xl drop-shadow-md">CLIQUE PARA ASSISTIR À APRESENTAÇÃO SECRETA</p>
-                  <p className="text-zinc-400 text-xs sm:text-sm mt-1">Descubra o segredo por trás do mercado bilionário do GTA RP</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Video Controls Bar */}
-          <div className="bg-zinc-900 px-4 py-3 border-t border-zinc-800 flex flex-col gap-2">
-            {/* Progress bar */}
-            <div className="relative w-full h-1.5 bg-zinc-800 rounded-full cursor-pointer overflow-hidden" onClick={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const pos = (e.clientX - rect.left) / rect.width;
-              setCurrentTime(Math.floor(pos * duration));
-            }}>
-              <div 
-                className="absolute top-0 left-0 h-full bg-rose-500 transition-all"
-                style={{ width: `${(currentTime / duration) * 100}%` }}
-              ></div>
-            </div>
-
-            <div className="flex items-center justify-between text-xs text-zinc-400">
-              <div className="flex items-center gap-3">
-                <button 
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="text-white hover:text-rose-500 transition-colors"
-                >
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white" />}
-                </button>
-                <button 
-                  onClick={() => setIsMuted(!isMuted)}
-                  className="text-white hover:text-rose-500 transition-colors"
-                >
-                  {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                </button>
-                <span className="font-mono">{formatTime(currentTime)} / {formatTime(duration)}</span>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <button 
-                  onClick={() => setShowTranscript(!showTranscript)}
-                  className="hover:text-white transition-colors underline underline-offset-4"
-                >
-                  {showTranscript ? 'Ocultar Transcrição' : 'Ver Transcrição'}
-                </button>
-                <button 
-                  onClick={() => {
-                    const el = document.documentElement;
-                    if (!document.fullscreenElement) el.requestFullscreen();
-                    else document.exitFullscreen();
+            {/* Poster / Start or Resume Button Overlay when not playing */}
+            {!isPlaying && (
+              <div
+                onClick={() => void safePlayVideo(!hasStarted)}
+                className="absolute inset-0 bg-black/70 backdrop-blur-[2px] flex flex-col items-center justify-center p-4 text-center z-30 cursor-pointer"
+              >
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    void safePlayVideo(!hasStarted);
                   }}
-                  className="text-white hover:text-rose-500 transition-colors"
+                  className="btn-checkout-glow bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-black text-sm sm:text-base py-3.5 px-6 rounded-2xl shadow-2xl flex items-center justify-center gap-2.5 border border-green-300/60 transition-transform hover:scale-105 active:scale-95"
                 >
-                  <Maximize className="w-4 h-4" />
+                  <Play className="w-5 h-5 fill-white shrink-0 drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
+                  <span className="drop-shadow-[0_1px_4px_rgba(0,0,0,0.3)]">
+                    {hasStarted ? 'CONTINUAR VÍDEO' : 'COMEÇAR VÍDEO'}
+                  </span>
                 </button>
+                <p className="text-zinc-300 text-xs font-medium tracking-wide mt-3 drop-shadow-md">
+                  "Aumente o volume"
+                </p>
               </div>
-            </div>
+            )}
           </div>
-
-          {/* Transcript Drawer */}
-          {showTranscript && (
-            <div className="bg-zinc-950 p-6 border-t border-zinc-800 text-sm text-zinc-300 max-h-60 overflow-y-auto space-y-3 font-sans">
-              <h4 className="font-bold text-white mb-2">Transcrição do Vídeo Exclusivo:</h4>
-              <p><strong>[0:00]</strong> "Se você acha que precisa passar 5 anos na faculdade de Ciência da Computação para ganhar dinheiro com jogos, você está completamente errado..."</p>
-              <p><strong>[1:15]</strong> "Com a chegada explosiva do ecossistema do GTA VI RP e o avanço das IAs generativas, qualquer pessoa pode criar mapas personalizados de alto padrão em questão de minutos."</p>
-              <p><strong>[2:30]</strong> "Donos de servidores estão pagando entre R$ 1.500 e R$ 5.000 por cada mapa ou sistema otimizado. Aproveite o preço de <span className="text-rose-500 font-bold">Black Friday</span> porque essa condição vai sair do ar em breve..."</p>
-            </div>
-          )}
         </div>
+
 
         {/* Highlights directly below VSL */}
         <div className="max-w-4xl mx-auto mt-8">
@@ -598,7 +565,7 @@ export default function App() {
             </p>
 
             {/* Conversa com o ChatGPT */}
-            <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 sm:p-5 space-y-4 shadow-xl mb-6">
+            <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 sm:p-5 space-y-4 shadow-xl">
               <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded-md bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
@@ -633,21 +600,6 @@ export default function App() {
                 </div>
               </div>
             </div>
-
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                <span className="text-sm text-zinc-200"><strong className="text-white">Extremamente fácil:</strong> copie e cole nossos prompts prontos direto na IA.</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                <span className="text-sm text-zinc-200"><strong className="text-white">Zero programação:</strong> você não precisa escrever uma única linha de código.</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                <span className="text-sm text-zinc-200"><strong className="text-white">Alta margem e escala:</strong> fature de casa em Reais ou Dólares antes mesmo do jogo lançar.</span>
-              </div>
-            </div>
           </div>
 
           <div className="relative">
@@ -661,6 +613,41 @@ export default function App() {
                 loading="lazy"
                 decoding="async"
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY THIS ACTUALLY WORKS (SEPARATE SECTION) */}
+      <section className="py-8 sm:py-12 px-4 md:px-8 max-w-6xl mx-auto">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+            Por que isso <span className="text-amber-400">realmente dá certo?</span>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 sm:p-6 shadow-xl flex items-start gap-3.5">
+            <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0 mt-0.5" />
+            <div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1">Extremamente fácil</h3>
+              <p className="text-sm text-zinc-300 leading-relaxed">Copie e cole nossos prompts prontos direto na IA.</p>
+            </div>
+          </div>
+
+          <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 sm:p-6 shadow-xl flex items-start gap-3.5">
+            <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0 mt-0.5" />
+            <div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1">Zero programação</h3>
+              <p className="text-sm text-zinc-300 leading-relaxed">Você não precisa escrever uma única linha de código.</p>
+            </div>
+          </div>
+
+          <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 sm:p-6 shadow-xl flex items-start gap-3.5">
+            <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0 mt-0.5" />
+            <div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1">Alta margem e escala</h3>
+              <p className="text-sm text-zinc-300 leading-relaxed">Fature de casa em Reais ou Dólares antes mesmo do jogo lançar.</p>
             </div>
           </div>
         </div>
