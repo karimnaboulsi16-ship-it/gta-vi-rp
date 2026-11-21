@@ -245,6 +245,15 @@ export default function App() {
     return () => observer.disconnect();
   }, []);
 
+  const CHECKOUT_URL = 'https://pay.wiapy.com/F6rGZIyQZ1UL';
+  const isEmbedded = (() => {
+    try {
+      return typeof window !== 'undefined' && window.self !== window.top;
+    } catch {
+      return true;
+    }
+  })();
+
   const handleCheckoutClick = () => {
     trackMetaEvent(
       'InitiateCheckout',
@@ -344,8 +353,8 @@ export default function App() {
 
         {/* Headline */}
         <div className="text-center w-full max-w-4xl mx-auto mb-5 sm:mb-10">
-          <h1 className="font-['Sora',sans-serif] text-[1.4rem] sm:text-5xl lg:text-[3.35rem] font-extrabold tracking-[-0.03em] text-white mb-2.5 sm:mb-6 leading-[1.15] sm:leading-[1.14] antialiased">
-            Saia da <span className="text-rose-500 font-extrabold">CLT</span> faturando de <span className="text-amber-400">R$ 10.000 a R$ 30.000 ainda no primeiro mês</span> Programando Mapas para o GTA VI RP Usando Apenas IA
+          <h1 className="font-['Sora',sans-serif] text-[1.75rem] sm:text-5xl lg:text-[3.35rem] font-extrabold tracking-[-0.03em] text-white mb-2.5 sm:mb-6 leading-[1.15] sm:leading-[1.14] antialiased">
+            Faça de <span className="text-[#F5B942] drop-shadow-[0_0_18px_rgba(245,185,66,0.6)]">R$ 10.000 a R$ 50.000</span> ainda no primeiro mês e saia da <span className="text-rose-500 font-extrabold">CLT</span> Programando Mapas para o GTA VI RP Usando Apenas IA
           </h1>
           <p className="text-xs sm:text-xl text-zinc-300 w-full sm:max-w-3xl mx-auto leading-snug sm:leading-relaxed">
             Já perdeu todas as ondas, vai perder mais uma?
@@ -847,6 +856,62 @@ export default function App() {
         </div>
       </section>
 
+      {/* WHY YOU SHOULD ACQUIRE THIS KNOWLEDGE (DIRECTLY BELOW SOCIAL PROOF) */}
+      <section className="py-8 sm:py-12 px-4 md:px-8 max-w-4xl mx-auto">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+            Por que você deve <span className="text-[#F5B942]">adquirir esse conhecimento:</span>
+          </h2>
+        </div>
+
+        <div className="space-y-3 sm:space-y-4">
+          <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 sm:p-5 flex items-start gap-3.5 shadow-lg">
+            <span className="w-8 h-8 rounded-xl bg-[#F5B942]/15 border border-[#F5B942]/40 text-[#F5B942] font-black text-sm flex items-center justify-center shrink-0">
+              1
+            </span>
+            <p className="text-sm sm:text-base text-zinc-100 font-medium leading-relaxed pt-0.5">
+              <strong className="text-white">GTA 6 está em alta</strong>, ninguém começou a criar os mapas RP.
+            </p>
+          </div>
+
+          <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 sm:p-5 flex items-start gap-3.5 shadow-lg">
+            <span className="w-8 h-8 rounded-xl bg-[#F5B942]/15 border border-[#F5B942]/40 text-[#F5B942] font-black text-sm flex items-center justify-center shrink-0">
+              2
+            </span>
+            <p className="text-sm sm:text-base text-zinc-100 font-medium leading-relaxed pt-0.5">
+              Tem muito mais chance de você conseguir ficar rico agora <strong className="text-[#F5B942]">ANTES QUE FIQUE EM ALTA</strong>.
+            </p>
+          </div>
+
+          <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 sm:p-5 flex items-start gap-3.5 shadow-lg">
+            <span className="w-8 h-8 rounded-xl bg-[#F5B942]/15 border border-[#F5B942]/40 text-[#F5B942] font-black text-sm flex items-center justify-center shrink-0">
+              3
+            </span>
+            <p className="text-sm sm:text-base text-zinc-100 font-medium leading-relaxed pt-0.5">
+              É extremamente fácil e só precisa do conhecimento da IA que eu te <strong className="text-white">OFEREÇO</strong>.
+            </p>
+          </div>
+
+          <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 sm:p-5 flex items-start gap-3.5 shadow-lg">
+            <span className="w-8 h-8 rounded-xl bg-[#F5B942]/15 border border-[#F5B942]/40 text-[#F5B942] font-black text-sm flex items-center justify-center shrink-0">
+              4
+            </span>
+            <p className="text-sm sm:text-base text-zinc-100 font-medium leading-relaxed pt-0.5">
+              Tem <strong className="text-white">quatro PDFs</strong> te ensinando e mais <strong className="text-white">10 videoaulas</strong> preparadas para você.
+            </p>
+          </div>
+
+          <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 sm:p-5 flex items-start gap-3.5 shadow-lg">
+            <span className="w-8 h-8 rounded-xl bg-[#F5B942]/15 border border-[#F5B942]/40 text-[#F5B942] font-black text-sm flex items-center justify-center shrink-0">
+              5
+            </span>
+            <p className="text-sm sm:text-base text-zinc-100 font-medium leading-relaxed pt-0.5">
+              É o método mais fácil de fazer dinheiro em <strong className="text-[#F5B942]">2026 e 2027</strong>.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* GTA VI RP PROGRAMMING GALLERY */}
       <section className="py-8 sm:py-10 px-4 md:px-8 max-w-6xl mx-auto">
         <div className="text-center mb-5 sm:mb-7">
@@ -1043,9 +1108,9 @@ export default function App() {
             {/* MAIN CHECKOUT BUTTON AT BOTTOM (Compact + Pumping + Glowing + Light Sweep) */}
             <div className="flex justify-center">
               <a 
-                href="https://pay.wiapy.com/F6rGZIyQZ1UL"
-                target="_blank"
-                rel="noopener noreferrer"
+                href={CHECKOUT_URL}
+                target={isEmbedded ? '_blank' : undefined}
+                rel={isEmbedded ? 'noopener noreferrer' : undefined}
                 onClick={handleCheckoutClick}
                 className="btn-checkout-glow w-full max-w-[300px] sm:max-w-md py-3.5 sm:py-4 px-4 sm:px-7 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-black text-sm sm:text-lg rounded-xl sm:rounded-2xl border border-green-300/60 transition-colors flex items-center justify-center gap-2 text-center"
               >
@@ -1226,9 +1291,9 @@ export default function App() {
 
                   <div className="pt-4 flex justify-center">
                     <a 
-                      href="https://pay.wiapy.com/F6rGZIyQZ1UL"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={CHECKOUT_URL}
+                      target={isEmbedded ? '_blank' : undefined}
+                      rel={isEmbedded ? 'noopener noreferrer' : undefined}
                       onClick={handleCheckoutClick}
                       className="btn-checkout-glow block text-center w-full max-w-[290px] py-3.5 px-4 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 hover:from-green-400 hover:via-emerald-300 hover:to-green-400 text-white font-extrabold rounded-xl border border-green-300/60 transition-colors text-xs sm:text-sm"
                     >
